@@ -5,10 +5,37 @@ import {
   Image,
   StatusBar,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
 import React from 'react';
 import {allImages} from '../utils/images';
 import {useNavigation} from '@react-navigation/native';
+
+const handleOpenGoogleMapsATM = () => {
+  // Replace "Custom Search Query" with your desired custom search query
+  const searchQuery = "Find near me ATM";
+
+  // Use the following deep link to open Google Maps with the custom search
+  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
+
+  // Open the link using Linking module
+  Linking.openURL(url)
+    .catch(() => alert('Unable to open Google Maps. Please make sure the Google Maps app is installed.'));
+};
+
+const handleOpenGoogleMapsBank = () => {
+  // Replace "Custom Search Query" with your desired custom search query
+  const searchQuery = "Bank Search";
+
+  // Use the following deep link to open Google Maps with the custom search
+  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
+
+  // Open the link using Linking module
+  Linking.openURL(url)
+    .catch(() => alert('Unable to open Google Maps. Please make sure the Google Maps app is installed.'));
+};
+
+
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -112,7 +139,7 @@ const Dashboard = () => {
           <View className="flex-row  ">
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('FindBank');
+                handleOpenGoogleMapsBank()
               }}>
               <Image
                 className="w-[160px] h-[140px]"
@@ -122,7 +149,7 @@ const Dashboard = () => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('FindAtm');
+                handleOpenGoogleMapsATM()
               }}>
               <Image
                 className="w-[160px] h-[140px]"

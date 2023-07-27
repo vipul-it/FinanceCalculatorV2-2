@@ -4,8 +4,11 @@ import CustomTopLayout from './common/CustomTopLayout';
 import SubHeading from './common/SubHeading';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {allImages} from '../utils/images';
+import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 
 const ChangeCurrency = () => {
+  const navigation = useNavigation();
   const [showImage1, setShowImage1] = useState(true);
   const [showImage2, setShowImage2] = useState(false);
 
@@ -14,9 +17,46 @@ const ChangeCurrency = () => {
     setShowImage2(!showImage2);
   };
 
+  const [amount, setAmount] = useState('');
+  const [convertedAmount, setConvertedAmount] = useState('');
+  const [exchangeRate, setExchangeRate] = useState(null);
+
+  const getExchangeRate = async () => {
+    try {
+      const response = await axios.get(
+        'http://api.exchangeratesapi.io/latest?access_key=738525856d507c76cc213eafe08c6b3c',
+        {
+          params: {
+            base: 'INR',
+            symbols: 'USD',
+          },
+        },
+      );
+      const rate = response.data.rates.USD;
+      setExchangeRate(rate);
+      console.log(rate);
+    } catch (error) {
+      console.log('Error fetching exchange rate:', error);
+    }
+  };
+
+  const convertCurrency = () => {
+    if (!amount || !exchangeRate) {
+      return;
+    }
+
+    const converted = (parseFloat(amount) * exchangeRate).toFixed(2);
+    setConvertedAmount(converted);
+  };
+
   return (
     <View>
-      <CustomTopLayout name="Currency Converter" />
+      <CustomTopLayout
+        onPress={() => {
+          navigation.goBack();
+        }}
+        name="Currency Converter"
+      />
       <View className="mx-5 mt-1">
         <SubHeading name="Enter Amount" />
         <KeyboardAwareScrollView>
@@ -25,6 +65,8 @@ const ChangeCurrency = () => {
               className="w-full text-blackC"
               placeholder="eg. 10000"
               keyboardType="numeric"
+              value={amount}
+              onChangeText={setAmount}
             />
           </View>
         </KeyboardAwareScrollView>
@@ -66,26 +108,35 @@ const ChangeCurrency = () => {
           </View>
           <View className="w-[35%] flex justify-center">
             <TouchableOpacity>
-              
-                {showImage2 ? (
+              {showImage2 ? (
                 <View className="flex-row justify-center items-center text-whiteC text-center py-2 px-3  rounded-md bg-primaryDark">
-                <Image source={allImages.IndianFlag} className="mr-2" />
-                <Text className="text-whiteC ">INR</Text>
-              </View>
-            ) : (
-              <View className="flex-row justify-center items-center text-whiteC text-center py-2 px-3  rounded-md bg-primaryDark">
-                <Image source={allImages.UsaFlag} className="mr-2" />
-                <Text className="text-whiteC ">USD</Text>
-              </View>
-            )}
+                  <Image source={allImages.IndianFlag} className="mr-2" />
+                  <Text className="text-whiteC ">INR</Text>
+                </View>
+              ) : (
+                <View className="flex-row justify-center items-center text-whiteC text-center py-2 px-3  rounded-md bg-primaryDark">
+                  <Image source={allImages.UsaFlag} className="mr-2" />
+                  <Text className="text-whiteC ">USD</Text>
+                </View>
+              )}
             </TouchableOpacity>
           </View>
         </View>
         <Text className="text-center py-2 pt-5 text-lg font-semibold text-[#6C2929]">
-          100 INR = 1.22 USD
+          {amount} INR = {convertedAmount} USD
+          {exchangeRate && (
+            <Text>
+              {`${amount} INR is approximately ${convertedAmount} USD`}
+            </Text>
+          )}
         </Text>
 
-        <TouchableOpacity className=" ">
+        <TouchableOpacity
+          onPress={() => {
+            getExchangeRate();
+            convertCurrency();
+          }}
+          className=" ">
           <View className=" text-whiteC mx-24 mt-5 py-2 px-3 rounded-md bg-primaryDark">
             <Text className="text-whiteC text-center ">Convert</Text>
           </View>
