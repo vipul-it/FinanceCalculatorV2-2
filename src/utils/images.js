@@ -37,6 +37,9 @@ import FD from '../assets/images/FD.png';
 import SIP from '../assets/images/SIP.png';
 import RD from '../assets/images/RD.png';
 import Calender from '../assets/images/calender.png';
+import UsaFlag from '../assets/images/usaFlag.png';
+import IndianFlag from '../assets/images/indiaFlag.png';
+import ConverterArrow from '../assets/images/ConverterArrow.png';
 
 
 
@@ -79,4 +82,7 @@ export const allImages = {
   SIP: SIP,
   RD: RD,
   Calender: Calender,
+  ConverterArrow: ConverterArrow,
+  IndianFlag: IndianFlag,
+  UsaFlag: UsaFlag,
 };
