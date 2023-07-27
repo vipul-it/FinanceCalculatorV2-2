@@ -1,4 +1,4 @@
-import {View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, Image, Alert, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import CustomTopLayout from './common/CustomTopLayout';
 import SubHeading from './common/SubHeading';
@@ -17,37 +17,31 @@ const ChangeCurrency = () => {
     setShowImage2(!showImage2);
   };
 
-  const [amount, setAmount] = useState('');
-  const [convertedAmount, setConvertedAmount] = useState('');
-  const [exchangeRate, setExchangeRate] = useState(null);
+  
 
-  const getExchangeRate = async () => {
+  const [amountINR, setAmountINR] = useState('');
+  const [amountUSD, setAmountUSD] = useState('');
+
+  const convertCurrency = async () => {
     try {
       const response = await axios.get(
-        'http://api.exchangeratesapi.io/latest?access_key=738525856d507c76cc213eafe08c6b3c',
-        {
-          params: {
-            base: 'INR',
-            symbols: 'USD',
-          },
-        },
+        'http://api.exchangeratesapi.io/latest?access_key=738525856d507c76cc213eafe08c6b3c'
       );
-      const rate = response.data.rates.USD;
-      setExchangeRate(rate);
-      console.log(rate);
+      
+      // Check if the API call was successful
+      if (response.data.result === 'success') {
+        const conversionRate = response.data.conversion_rates.USD;
+        const convertedAmount = parseFloat(amountINR) * conversionRate;
+        setAmountUSD(convertedAmount.toFixed(2));
+      } else {
+        Alert.alert('Error', 'Unable to fetch exchange rate data.');
+      }
     } catch (error) {
-      console.log('Error fetching exchange rate:', error);
+      Alert.alert('Error', 'Something went wrong. Please try again later.');
     }
   };
 
-  const convertCurrency = () => {
-    if (!amount || !exchangeRate) {
-      return;
-    }
-
-    const converted = (parseFloat(amount) * exchangeRate).toFixed(2);
-    setConvertedAmount(converted);
-  };
+  
 
   return (
     <View>
@@ -65,8 +59,8 @@ const ChangeCurrency = () => {
               className="w-full text-blackC"
               placeholder="eg. 10000"
               keyboardType="numeric"
-              value={amount}
-              onChangeText={setAmount}
+              value={amountINR}
+        onChangeText={(text) => setAmountINR(text)}
             />
           </View>
         </KeyboardAwareScrollView>
@@ -123,18 +117,13 @@ const ChangeCurrency = () => {
           </View>
         </View>
         <Text className="text-center py-2 pt-5 text-lg font-semibold text-[#6C2929]">
-          {amount} INR = {convertedAmount} USD
-          {exchangeRate && (
-            <Text>
-              {`${amount} INR is approximately ${convertedAmount} USD`}
-            </Text>
-          )}
+          {amountINR} INR = {amountUSD} USD
+          
         </Text>
 
         <TouchableOpacity
           onPress={() => {
-            getExchangeRate();
-            convertCurrency();
+            convertCurrency()
           }}
           className=" ">
           <View className=" text-whiteC mx-24 mt-5 py-2 px-3 rounded-md bg-primaryDark">

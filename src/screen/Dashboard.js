@@ -13,7 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 
 const handleOpenGoogleMapsATM = () => {
   // Replace "Custom Search Query" with your desired custom search query
-  const searchQuery = "Find near me ATM";
+  const searchQuery = "Find near by me ATM";
 
   // Use the following deep link to open Google Maps with the custom search
   const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
@@ -25,7 +25,7 @@ const handleOpenGoogleMapsATM = () => {
 
 const handleOpenGoogleMapsBank = () => {
   // Replace "Custom Search Query" with your desired custom search query
-  const searchQuery = "Bank Search";
+  const searchQuery = "Find near by me Bank";
 
   // Use the following deep link to open Google Maps with the custom search
   const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
