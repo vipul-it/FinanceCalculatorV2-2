@@ -1,13 +1,34 @@
-import {View, Text, TextInput, Button, ScrollView, Image, Keyboard} from 'react-native';
-import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  ScrollView,
+  Image,
+  Keyboard,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import CustomTopLayout from '../common/CustomTopLayout';
 import {useNavigation} from '@react-navigation/native';
 import SubHeading from '../common/SubHeading';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CalculateButton from '../common/CalculateButton';
 import {allImages} from '../../utils/images';
+import SQLite from 'react-native-sqlite-storage';
+
+const db = SQLite.openDatabase('mydb.db');
 
 const TipCalculator = () => {
+  useEffect(() => {
+    // Create the table if it doesn't exist
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS TipHistory (id INTEGER PRIMARY KEY AUTOINCREMENT,  billAmount REAL, tipPercentage REAL, nofPeople INTEGER, tipAmount REAL, totalBill REAL, perPersonBill REAL)',
+        [],
+      );
+    });
+  }, []);
+
   const navigation = useNavigation();
 
   const [billAmount, setBillAmount] = useState('');
@@ -20,7 +41,7 @@ const TipCalculator = () => {
   const [tipPercentageError, setTipPercentageError] = useState('');
   const [nofPeopleError, setNofPeopleError] = useState('');
 
-  //   billAmount, tipPercentage, nofPeople, tipAmount, totalBill
+  //   billAmount, tipPercentage, nofPeople, tipAmount, totalBill, perPersonBill
 
   //   Reset data
 
@@ -74,6 +95,32 @@ const TipCalculator = () => {
     setTipAmount(tip.toFixed(2));
     setTotalBill(total.toFixed(2));
     setPerPersonBill(perPerson.toFixed(2));
+
+    insertData();
+  };
+
+  const insertData = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO TipHistory (billAmount, tipPercentage, nofPeople, tipAmount, totalBill, perPersonBill) VALUES (?, ?, ?, ? , ?, ?)',
+        [
+          billAmount,
+          tipPercentage,
+          nofPeople,
+          tipAmount,
+          totalBill,
+          perPersonBill
+        ],
+        // (_, result) => {
+        //   if (result.insertId !== undefined) {
+        //     Alert.alert('Success', 'Data inserted successfully!');
+        //     fetchData();
+        //   } else {
+        //     Alert.alert('Error', 'Failed to insert data!');
+        //   }
+        // },
+      );
+    });
   };
   // Calculation end
 
@@ -96,6 +143,7 @@ const TipCalculator = () => {
                 onChangeText={text => setBillAmount(text)}
                 placeholder="eg. 100000"
                 keyboardType="numeric"
+                autoComplete="off"
               />
               <Text className="text-blackC">&#8377;</Text>
             </View>
@@ -111,6 +159,7 @@ const TipCalculator = () => {
               onChangeText={text => setTipPercentage(text)}
               placeholder="eg. 8"
               keyboardType="numeric"
+              autoComplete="off"
             />
             <Text className="text-blackC">&#37;</Text>
           </View>
@@ -126,6 +175,7 @@ const TipCalculator = () => {
                 onChangeText={text => setNofPeople(text)}
                 placeholder="eg. 5"
                 keyboardType="numeric"
+                autoComplete="off"
               />
               <View className="flex-row">
                 <Text className="text-blackC"></Text>
@@ -147,19 +197,14 @@ const TipCalculator = () => {
               onPress={resetData}
               srcPath={allImages.Reset}
             />
-            {/* <CalculateButton
+            <CalculateButton
               name="History"
               onPress={() => {
                 navigation.navigate('TipHistory');
               }}
               srcPath={allImages.History}
-            /> */}
+            />
           </View>
-
-          {/* <Text>Tip Amount: {tipAmount}</Text>
-        <Text>Per Person Bill: {perPersonBill}</Text>
-        <Text>Bill Amount: {billAmount}</Text>
-        <Text>Total Bill: {totalBill}</Text> */}
         </View>
 
         <View className="h-[240px] w-full rounded-t-[30px] bg-primaryC py-3">
@@ -191,8 +236,6 @@ const TipCalculator = () => {
               &#8377; {totalBill}
             </Text>
           </View>
-
-          
         </View>
       </ScrollView>
     </View>

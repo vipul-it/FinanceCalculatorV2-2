@@ -61,10 +61,10 @@ const Emicalculator = () => {
     setLoanAmountPercentage(0);
     setTotalInterestPercentage(0);
   };
-  
+
   const calculateLoan = () => {
-  
-    
+    // Hide the keyboard
+    Keyboard.dismiss();
 
     const loanAmount = parseFloat(amount);
     const loanInterest = parseFloat(interest) / 100;
@@ -100,18 +100,11 @@ const Emicalculator = () => {
     setTotalPayment(totalPayment.toFixed(2));
     setLoanAmountPercentage(loanAmountPercentage.toFixed(2));
     setTotalInterestPercentage(totalInterestPercentage.toFixed(2));
-
-    // Hide the keyboard
-    Keyboard.dismiss();
   };
-
-
 
   const currentDate = moment();
   const formattedTime = currentDate.format('hh:mm a');
   const currentDateFormat = moment().format('DD MMMM');
-
-
 
   const [selectedcolor, setSelected] = useState(1);
 
@@ -164,15 +157,12 @@ const Emicalculator = () => {
   const handleCalculateButton = () => {
     // Validate input values
     if (!amount || !interest || !tenure) {
-      Alert.alert(
-        'Validation Error',
-        'Please enter empty fields.',
-      );
+      Alert.alert('Validation Error', 'Please enter empty fields.');
       return;
     }
-  calculateLoan();
-  insertData();
-};
+    calculateLoan();
+    insertData();
+  };
 
   return (
     <>
@@ -247,7 +237,7 @@ const Emicalculator = () => {
               <KeyboardAwareScrollView>
                 <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
                   <TextInput
-                    className="w-full text-blackC"                   
+                    className="w-full text-blackC"
                     value={amount}
                     onChangeText={text => setAmount(text)}
                     placeholder="eg. 100000"
@@ -278,7 +268,7 @@ const Emicalculator = () => {
                     keyboardType="numeric"
                   />
                   <View className="flex-row">
-                  <Text className="text-blackC">Years</Text>
+                    <Text className="text-blackC">Years</Text>
                     {/* <Text className="text-grayC">/</Text>
                     <Text className="text-grayC">Months</Text> */}
                   </View>
@@ -322,7 +312,7 @@ const Emicalculator = () => {
                     keyboardType="numeric"
                   />
                   <View className="flex-row">
-                  <Text className="text-blackC">Years</Text>
+                    <Text className="text-blackC">Years</Text>
                     {/* <Text className="text-grayC">/</Text>
                     <Text className="text-grayC">Months</Text> */}
                   </View>

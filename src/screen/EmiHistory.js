@@ -37,7 +37,7 @@ const EmiHistory = () => {
   const handleDeleteDatabase = () => {
     Alert.alert(
       'Confirm Deletion',
-      'Are you sure you want to delete the all Hstory?',
+      'Are you sure you want to delete the all History?',
       [
         {
           text: 'No',

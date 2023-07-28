@@ -7,7 +7,7 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CustomTopLayout from '../common/CustomTopLayout';
 import {useNavigation} from '@react-navigation/native';
 import SubHeading from '../common/SubHeading';
@@ -15,7 +15,21 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CalculateButton from '../common/CalculateButton';
 import {allImages} from '../../utils/images';
 
+import SQLite from 'react-native-sqlite-storage';
+
+const db = SQLite.openDatabase('mydb.db');
+
 const DiscountCalculator = () => {
+  useEffect(() => {
+    // Create the table if it doesn't exist
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS DiscountCalculator (id INTEGER PRIMARY KEY AUTOINCREMENT, priceBeforeDiscount REAL, discountPercent REAL, priceAfterDiscount REAL, youSave REAL)',
+        [],
+      );
+    });
+  }, []);
+
   const navigation = useNavigation();
   const [priceBeforeDiscount, setPriceBeforeDiscount] = useState('');
   const [discountPercent, setDiscountPercent] = useState('');
@@ -30,10 +44,6 @@ const DiscountCalculator = () => {
     setYouSave('');
   };
 
-  const handleCalculateButton = () => {
-    calculateDiscount();
-    Keyboard.dismiss();
-  };
   // Calculation start
   const calculateDiscount = () => {
     Keyboard.dismiss();
@@ -67,6 +77,28 @@ const DiscountCalculator = () => {
     // Update state variable
     setPriceAfterDiscount(priceAfter.toFixed(2));
     setYouSave(youSave.toFixed(2));
+
+    insertData();
+  };
+
+  const insertData = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO DiscountCalculator (priceBeforeDiscount, discountPercent, priceAfterDiscount, youSave) VALUES (?, ?, ?, ?)',
+        [priceBeforeDiscount, discountPercent, priceAfterDiscount, youSave],
+        // (_, result) => {
+        //   if (result.insertId !== undefined) {
+        //     Alert.alert('Success', 'Data inserted successfully!');
+        //     fetchData();
+        //   } else {
+        //     Alert.alert('Error', 'Failed to insert data!');
+        //   }
+        // },
+      );
+    });
+  };
+  const handleCalculateButton = () => {
+    calculateDiscount();
   };
 
   // Calculation end
@@ -90,6 +122,7 @@ const DiscountCalculator = () => {
                 onChangeText={text => setPriceBeforeDiscount(text)}
                 placeholder="eg. 100000"
                 keyboardType="numeric"
+                autoComplete="off"
               />
               <Text className="text-blackC">&#8377;</Text>
             </View>
@@ -102,6 +135,7 @@ const DiscountCalculator = () => {
               onChangeText={text => setDiscountPercent(text)}
               placeholder="eg. 8"
               keyboardType="numeric"
+              autoComplete="off"
             />
             <Text className="text-blackC">&#37;</Text>
           </View>
@@ -116,6 +150,13 @@ const DiscountCalculator = () => {
               name="Reset"
               onPress={resetData}
               srcPath={allImages.Reset}
+            />
+            <CalculateButton
+              name="History"
+              onPress={() => {
+                navigation.navigate('DiscountHistory');
+              }}
+              srcPath={allImages.History}
             />
           </View>
         </View>

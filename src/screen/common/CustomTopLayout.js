@@ -8,7 +8,7 @@ const CustomTopLayout = ({name, onPress}) => {
       <View className="h-20 w-full rounded-b-[70px] bg-primaryC px-8 py-4">
         <View className="flex-row items-center justify-between  ">
           <View className="-mr-[16%]">
-            <TouchableOpacity onPress={onPress} className="p-5">
+            <TouchableOpacity onPress={onPress} className="p-5 -ml-4">
               <Image
                 className="w-[14px] h-[16px]"
                 source={allImages.BackLeftArrow}
