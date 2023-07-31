@@ -122,35 +122,19 @@ const TipHistory = () => {
 
                     <View>
                       <Text className="text-primaryHeading font-semibold ">
-                        Bill &#8377; {item.billAmount}, Tip {item.tipPercentage}%, People {item.nofPeople},
-                       
+                        Bill &#8377; {item.billAmount}, Tip {item.tipPercentage}
+                        %, People {item.nofPeople},
                       </Text>
-                      {/* billAmount,
-          tipPercentage,
-          nofPeople,
-          tipAmount,
-          totalBill,
-          perPersonBill, */}
 
                       <Text className="text-primaryHeading font-semibold ">
-                      Per Person Bill &#8377; {item.perPersonBill}
+                        Per Person Bill &#8377; {item.perPersonBill}
                       </Text>
                       <Text className="text-primaryDark font-semibold">
                         Total Bill &#8377; {item.totalBill}
                       </Text>
                     </View>
                   </View>
-                  <View>
-                    {/* <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate('EmiDetails', {mydata: item});
-                      }}>
-                      <Image
-                        className="w-6 h-6"
-                        source={allImages.RightArrowButton}
-                      />
-                    </TouchableOpacity> */}
-                  </View>
+                  <View></View>
                 </View>
               </View>
             ))}

@@ -20,8 +20,21 @@ import CustomTopLayout from './common/CustomTopLayout';
 import {allImages} from '../utils/images';
 import SubHeading from './common/SubHeading';
 import CalculateButton from './common/CalculateButton';
+import SQLite from 'react-native-sqlite-storage';
+
+const db = SQLite.openDatabase('mydb.db');
 
 const CompareLoan = () => {
+  useEffect(() => {
+    // Create the table if it doesn't exist
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS CompareLoanHistory (id INTEGER PRIMARY KEY AUTOINCREMENT,  principalAmount1 REAL,interest1 REAL,years1 INTEGER,months1 INTEGER,principalAmount2 REAL,interest2 REAL,years2 INTEGER,months2 INTEGER,emi1 REAL,emi2 REAL,interestPayable1 REAL,interestPayable2 REAL,totalPayable1 REAL,totalPayable2 REAL, emiDiff REAL, interestPayDiff REAL, totalPayDiff REAL)',
+        [],
+      );
+    });
+  }, []);
+
   const navigation = useNavigation();
 
   const [principalAmount1, setPrincipalAmount1] = useState('');
@@ -42,7 +55,7 @@ const CompareLoan = () => {
   const [interestPayDiff, setInterestPayDiff] = useState('');
   const [totalPayDiff, setTotalPayDiff] = useState('');
 
-
+  // principalAmount1,interest1,years1,months1,principalAmount2,interest2,years2,months2,emi1,emi2,interestPayable1,interestPayable2,totalPayable1,totalPayable2, emiDiff, interestPayDiff, totalPayDiff
 
   const resetData = () => {
     setPrincipalAmount1('');
@@ -73,7 +86,7 @@ const CompareLoan = () => {
       (principalAmount1 * monthlyInterestRate1 * denominator1) /
       (denominator1 - 1);
     const interestPayable1 = emi1 * timePeriod1 - principalAmount1;
-    const totalPayable1 = principalAmount1 + interestPayable1;
+    const totalPayable1 = principalAmount1 * 1 + interestPayable1;
 
     // Loan 2 calculations
     const monthlyInterestRate2 = interest2 / 100 / 12;
@@ -82,7 +95,7 @@ const CompareLoan = () => {
       (principalAmount2 * monthlyInterestRate2 * denominator2) /
       (denominator2 - 1);
     const interestPayable2 = emi2 * timePeriod2 - principalAmount2;
-    const totalPayable2 = principalAmount2 + interestPayable2;
+    const totalPayable2 =   interestPayable2 + principalAmount2 * 1;
 
     setEMI1(emi1.toFixed(2));
     setEMI2(emi2.toFixed(2));
@@ -104,11 +117,55 @@ const CompareLoan = () => {
 
   const handleCalculateButton = () => {
     // Validate input values
-    if (!principalAmount1 || !interest1 || !principalAmount2 || !interest2 || !years1 || !months1 || !years2 || !months2) {
+    if (
+      !principalAmount1 ||
+      !interest1 ||
+      !principalAmount2 ||
+      !interest2 ||
+      !years1 ||
+      !months1 ||
+      !years2 ||
+      !months2
+    ) {
       Alert.alert('Validation Error', 'Please enter empty fields.');
       return;
     }
     calculateLoanComparison();
+    insertData();
+  };
+  const insertData = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO CompareLoanHistory (principalAmount1,interest1,years1,months1,principalAmount2,interest2,years2,months2,emi1,emi2,interestPayable1,interestPayable2,totalPayable1,totalPayable2, emiDiff, interestPayDiff, totalPayDiff) VALUES (?, ?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+          principalAmount1,
+          interest1,
+          years1,
+          months1,
+          principalAmount2,
+          interest2,
+          years2,
+          months2,
+          emi1,
+          emi2,
+          interestPayable1,
+          interestPayable2,
+          totalPayable1,
+          totalPayable2,
+          emiDiff,
+          interestPayDiff,
+          totalPayDiff,
+        ],
+        // (_, result) => {
+        //   if (result.insertId !== undefined) {
+        //     Alert.alert('Success', 'Data inserted successfully!');
+        //     fetchData();
+        //   } else {
+        //     Alert.alert('Error', 'Failed to insert data!');
+        //   }
+        // },
+      );
+    });
   };
 
   return (
@@ -245,6 +302,13 @@ const CompareLoan = () => {
                   name="Reset"
                   onPress={resetData}
                   srcPath={allImages.Reset}
+                />
+                <CalculateButton
+                  name="History"
+                  onPress={() => {
+                    navigation.navigate('CompareLoanHistory');
+                  }}
+                  srcPath={allImages.History}
                 />
               </View>
             </View>

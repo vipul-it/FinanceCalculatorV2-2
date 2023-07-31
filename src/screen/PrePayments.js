@@ -21,7 +21,9 @@ import {allImages} from '../utils/images';
 import SubHeading from './common/SubHeading';
 import CalculateButton from './common/CalculateButton';
 
+
 const PrePayments = () => {
+ 
   const navigation = useNavigation();
 
   const [amount, setAmount] = useState('');

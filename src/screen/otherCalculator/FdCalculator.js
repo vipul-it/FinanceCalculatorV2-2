@@ -7,7 +7,7 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import CustomTopLayout from '../common/CustomTopLayout';
 import {useNavigation} from '@react-navigation/native';
 import SubHeading from '../common/SubHeading';
@@ -15,14 +15,30 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CalculateButton from '../common/CalculateButton';
 import {allImages} from '../../utils/images';
 
+import SQLite from 'react-native-sqlite-storage';
+
+const db = SQLite.openDatabase('mydb.db');
+
 const FdCalculator = () => {
+  useEffect(() => {
+    // Create the table if it doesn't exist
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS FdCalculatorHistory (id INTEGER PRIMARY KEY AUTOINCREMENT,  amount REAL, interestRate REAL, years INTEGER, months INTEGER, days INTEGER, maturityAmount REAL)',
+        [],
+      );
+    });
+  }, []);
+
   const navigation = useNavigation();
   const [amount, setAmount] = useState('');
   const [interestRate, setInterestRate] = useState('');
   const [years, setYears] = useState('');
-  const [months, setMonths] = useState('');
-  const [days, setDays] = useState('');
+  const [months, setMonths] = useState('0');
+  const [days, setDays] = useState('0');
   const [maturityAmount, setMaturityAmount] = useState('');
+
+  // amount, interestRate, years, months, days, maturityAmount
 
   //   Reset data
   const resetData = () => {
@@ -62,10 +78,7 @@ const FdCalculator = () => {
       isNaN(totalMonths) ||
       isNaN(totalDays)
     ) {
-      Alert.alert(
-        'Validation Error',
-        'Please enter all fields.',
-      );
+      Alert.alert('Validation Error', 'Please enter all fields.');
       return;
     }
 
@@ -78,6 +91,25 @@ const FdCalculator = () => {
 
     // Update state variable
     setMaturityAmount(maturity.toFixed(2));
+
+    insertData();
+  };
+
+  const insertData = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO FdCalculatorHistory (amount, interestRate, years, months, days, maturityAmount) VALUES (?, ?, ?, ? , ?, ?)',
+        [amount, interestRate, years, months, days, maturityAmount],
+        // (_, result) => {
+        //   if (result.insertId !== undefined) {
+        //     Alert.alert('Success', 'Data inserted successfully!');
+        //     fetchData();
+        //   } else {
+        //     Alert.alert('Error', 'Failed to insert data!');
+        //   }
+        // },
+      );
+    });
   };
 
   // Calculation end
@@ -101,6 +133,7 @@ const FdCalculator = () => {
                 onChangeText={setAmount}
                 placeholder="eg. 100000"
                 keyboardType="numeric"
+                autoComplete='off'
               />
               <Text className="text-blackC">&#8377;</Text>
             </View>
@@ -113,6 +146,7 @@ const FdCalculator = () => {
               onChangeText={setInterestRate}
               placeholder="eg. 8"
               keyboardType="numeric"
+              autoComplete='off'
             />
             <Text className="text-blackC">&#37;</Text>
           </View>
@@ -124,6 +158,7 @@ const FdCalculator = () => {
               onChangeText={setYears}
               placeholder="Years"
               keyboardType="numeric"
+              autoComplete='off'
             />
           </View>
           <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
@@ -133,6 +168,7 @@ const FdCalculator = () => {
               onChangeText={setMonths}
               placeholder="Months"
               keyboardType="numeric"
+              autoComplete='off'
             />
           </View>
           <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
@@ -142,6 +178,7 @@ const FdCalculator = () => {
               onChangeText={setDays}
               placeholder="Days"
               keyboardType="numeric"
+              autoComplete='off'
             />
           </View>
 
@@ -155,6 +192,13 @@ const FdCalculator = () => {
               name="Reset"
               onPress={resetData}
               srcPath={allImages.Reset}
+            />
+            <CalculateButton
+              name="History"
+              onPress={() => {
+                navigation.navigate('FdCalculatorHistory');
+              }}
+              srcPath={allImages.History}
             />
           </View>
         </View>
