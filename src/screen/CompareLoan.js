@@ -205,6 +205,7 @@ const CompareLoan = () => {
                         onChangeText={setPrincipalAmount1}
                         placeholder="eg. 100000"
                         keyboardType="numeric"
+                        autoComplete='off'
                       />
                       <Text className="text-blackC">&#8377;</Text>
                     </View>
@@ -215,6 +216,7 @@ const CompareLoan = () => {
                         onChangeText={setPrincipalAmount2}
                         placeholder="eg. 100000"
                         keyboardType="numeric"
+                        autoComplete='off'
                       />
                       <Text className="text-blackC">&#8377;</Text>
                     </View>
@@ -229,6 +231,7 @@ const CompareLoan = () => {
                       onChangeText={setInterest1}
                       placeholder="eg. 8"
                       keyboardType="numeric"
+                      autoComplete='off'
                     />
                     <Text className="text-blackC">&#37;</Text>
                   </View>
@@ -239,6 +242,7 @@ const CompareLoan = () => {
                       onChangeText={setInterest2}
                       placeholder="eg. 8"
                       keyboardType="numeric"
+                      autoComplete='off'
                     />
                     <Text className="text-blackC">&#37;</Text>
                   </View>
@@ -254,6 +258,7 @@ const CompareLoan = () => {
                         onChangeText={setYears1}
                         placeholder="eg. 5"
                         keyboardType="numeric"
+                        autoComplete='off'
                       />
                       <Text className="text-blackC -ml-7">Years</Text>
                     </View>
@@ -264,6 +269,7 @@ const CompareLoan = () => {
                         onChangeText={setYears2}
                         placeholder="eg. 5"
                         keyboardType="numeric"
+                        autoComplete='off'
                       />
                       <Text className="text-blackC -ml-7">Years</Text>
                     </View>
@@ -276,6 +282,7 @@ const CompareLoan = () => {
                         onChangeText={setMonths1}
                         placeholder="eg. 5"
                         keyboardType="numeric"
+                        autoComplete='off'
                       />
                       <Text className="text-blackC -ml-9">Months</Text>
                     </View>
@@ -286,6 +293,7 @@ const CompareLoan = () => {
                         onChangeText={setMonths2}
                         placeholder="eg. 5"
                         keyboardType="numeric"
+                        autoComplete='off'
                       />
                       <Text className="text-blackC -ml-9">Months</Text>
                     </View>

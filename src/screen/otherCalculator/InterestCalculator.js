@@ -9,10 +9,8 @@ import {
   FlatList,
   TouchableOpacity,
   Keyboard,
-  StyleSheet,
-  Button,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -22,6 +20,9 @@ import CalculateButton from '../common/CalculateButton';
 import SubHeading from '../common/SubHeading';
 import {Dropdown} from 'react-native-element-dropdown';
 import DatePicker from 'react-native-date-picker';
+import SQLite from 'react-native-sqlite-storage';
+
+const db = SQLite.openDatabase('mydb.db');
 
 // Alert.alert(JSON.stringify(data))
 const data = [
@@ -32,6 +33,26 @@ const data = [
 ];
 
 const InterestCalculator = () => {
+  useEffect(() => {
+    // Create the table if it doesn't exist
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS InterestCalculatorHistoryPeriod (id INTEGER PRIMARY KEY AUTOINCREMENT,  amount REAL, interest REAL, compoundInterval REAL, principleAmount REAL, years INTEGER, months INTEGER, totalInterest REAL, totalAmount REAL)',
+        [],
+      );
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   // Create the table if it doesn't exist
+  //   db.transaction(tx => {
+  //     tx.executeSql(
+  //       'CREATE TABLE IF NOT EXISTS InterestCalculatorHistoryDate (id INTEGER PRIMARY KEY AUTOINCREMENT,  damount REAL, dinterest REAL, dcompoundInterval REAL, dprincipleAmount REAL, selectedDateFrom DATE, selectedDateFrom DATE, dtotalInterest REAL, dtotalAmount REAL)',
+  //       [],
+  //     );
+  //   });
+  // }, []);
+
   const navigation = useNavigation();
 
   const [openFromDate, setOpenFromDate] = useState(false);
@@ -71,7 +92,7 @@ const InterestCalculator = () => {
   const [dtotalInterest, setDTotalInterest] = useState('');
   const [dtotalAmount, setDTotalAmount] = useState('');
 
- 
+  // amount, interest, compoundInterval, principleAmount, years, months, totalInterest, totalAmount, damount, dinterest, dcompoundInterval, dprincipleAmount, dtotalInterest, dtotalAmount
 
   const [value, setValue] = useState(1);
   const renderItem = item => {
@@ -139,13 +160,15 @@ const InterestCalculator = () => {
     const dparsedToDate = new Date(selectedDateTo);
 
     // Calculate the time in years
-    const dtimeInYears = (dparsedToDate - dparsedFromDate) / (1000 * 60 * 60 * 24 * 365);
+    const dtimeInYears =
+      (dparsedToDate - dparsedFromDate) / (1000 * 60 * 60 * 24 * 365);
 
     // Calculate the principal amount
     const dprincipleAmount = dparsedAmount;
 
     // Calculate the total interest
-    const dtotalInterest = (dprincipleAmount * dparsedInterest * dtimeInYears) / 100;
+    const dtotalInterest =
+      (dprincipleAmount * dparsedInterest * dtimeInYears) / 100;
 
     // Calculate the total amount
     const dtotalAmount = dprincipleAmount + dtotalInterest;
@@ -162,6 +185,7 @@ const InterestCalculator = () => {
       return;
     }
     calculateInterestPeriod();
+    insertDataPeriod();
   };
   const handleCalculateButtonDate = () => {
     // Validate input values
@@ -169,12 +193,60 @@ const InterestCalculator = () => {
       Alert.alert('Validation Error', 'Please enter empty fields.');
       return;
     }
-    if (!selectedDateFrom==!selectedDateTo) {
-      Alert.alert('Validation Error', 'From Date, To Date are Same. Please Change it.');
+    if (!selectedDateFrom == !selectedDateTo) {
+      Alert.alert(
+        'Validation Error',
+        'From Date, To Date are Same. Please Change it.',
+      );
       return;
     }
     calculateInterestDate();
+    insertDataDate();
   };
+  const insertDataPeriod = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO InterestCalculatorHistoryPeriod (amount, interest, compoundInterval, principleAmount, years, months, totalInterest, totalAmount) VALUES (?, ?, ?, ? , ?, ?, ?, ?)',
+        [
+          amount,
+          interest,
+          compoundInterval,
+          principleAmount,
+          years,
+          months,
+          totalInterest,
+          totalAmount,
+        ],
+        // (_, result) => {
+        //   if (result.insertId !== undefined) {
+        //     Alert.alert('Success', 'Data inserted successfully!');
+        //     fetchData();
+        //   } else {
+        //     Alert.alert('Error', 'Failed to insert data!');
+        //   }
+        // },
+      );
+    });
+  };
+
+  // const insertDataDate = () => {
+  //   db.transaction(tx => {
+  //     tx.executeSql(
+  //       'INSERT INTO InterestCalculatorHistoryDate (damount, dinterest, dcompoundInterval, dprincipleAmount, selectedDateFrom, selectedDateTo, dtotalInterest, dtotalAmount) VALUES (?, ?, ?, ? , ?, ?, ?, ?)',
+  //       [
+  //         damount, dinterest, dcompoundInterval, dprincipleAmount, selectedDateFrom, selectedDateTo, dtotalInterest, dtotalAmount
+  //       ],
+  //       // (_, result) => {
+  //       //   if (result.insertId !== undefined) {
+  //       //     Alert.alert('Success', 'Data inserted successfully!');
+  //       //     fetchData();
+  //       //   } else {
+  //       //     Alert.alert('Error', 'Failed to insert data!');
+  //       //   }
+  //       // },
+  //     );
+  //   });
+  // };
 
   const [selectedcolor, setSelected] = useState(1);
 
@@ -246,6 +318,7 @@ const InterestCalculator = () => {
                       onChangeText={setAmount}
                       placeholder="eg. 100000"
                       keyboardType="numeric"
+                      autoComplete="off"
                     />
                     <Text className="text-blackC">&#8377;</Text>
                   </View>
@@ -258,6 +331,7 @@ const InterestCalculator = () => {
                     onChangeText={setInterest}
                     placeholder="eg. 8"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <Text className="text-blackC">&#37;</Text>
                 </View>
@@ -268,7 +342,6 @@ const InterestCalculator = () => {
                     data={data}
                     labelField="label"
                     valueField="value"
-                    
                     value={compoundInterval}
                     onChange={item => {
                       setCompoundInterval(item.value);
@@ -286,6 +359,7 @@ const InterestCalculator = () => {
                       onChangeText={setYears}
                       placeholder="eg. 5"
                       keyboardType="numeric"
+                      autoComplete="off"
                     />
                     <View className="flex-row">
                       <Text className="text-blackC">Years</Text>
@@ -300,6 +374,7 @@ const InterestCalculator = () => {
                       onChangeText={setMonths}
                       placeholder="eg. 3"
                       keyboardType="numeric"
+                      autoComplete="off"
                     />
                     <View className="flex-row">
                       <Text className="text-blackC">Months</Text>
@@ -316,6 +391,13 @@ const InterestCalculator = () => {
                     name="Reset"
                     onPress={resetDataPeriod}
                     srcPath={allImages.Reset}
+                  />
+                  <CalculateButton
+                    name="History"
+                    onPress={() => {
+                      navigation.navigate('InterestCalculatorHistory');
+                    }}
+                    srcPath={allImages.History}
                   />
                 </View>
               </View>
@@ -393,9 +475,8 @@ const InterestCalculator = () => {
                     }}
                     renderItem={renderItem}
                   />
-                  
                 </View>
-                
+
                 <DatePicker
                   modal
                   mode="date"
@@ -475,6 +556,13 @@ const InterestCalculator = () => {
                     name="Reset"
                     onPress={resetDataDate}
                     srcPath={allImages.Reset}
+                  />
+                  <CalculateButton
+                    name="History"
+                    onPress={() => {
+                      navigation.navigate('InterestCalculatorHistory');
+                    }}
+                    srcPath={allImages.History}
                   />
                 </View>
               </View>
