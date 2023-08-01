@@ -7,15 +7,27 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import CustomTopLayout from '../common/CustomTopLayout';
 import {useNavigation} from '@react-navigation/native';
 import SubHeading from '../common/SubHeading';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CalculateButton from '../common/CalculateButton';
 import {allImages} from '../../utils/images';
+import SQLite from 'react-native-sqlite-storage';
+
+const db = SQLite.openDatabase('mydb.db');
 
 const RdCalculator = () => {
+  useEffect(() => {
+    // Create the table if it doesn't exist
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS RdCalculatorHistory (id INTEGER PRIMARY KEY AUTOINCREMENT,  monthlyAmount REAL, interest REAL, timePeriod REAL, maturityAmount REAL, totalInterest REAL, totalInvestment REAL)',
+        [],
+      );
+    });
+  }, []);
   const navigation = useNavigation();
 
   const [monthlyAmount, setMonthlyAmount] = useState('');
@@ -25,16 +37,16 @@ const RdCalculator = () => {
   const [totalInterest, setTotalInterest] = useState('');
   const [totalInvestment, setTotalInvestment] = useState('');
 
-  
+  // monthlyAmount, interest, timePeriod, maturityAmount, totalInterest, totalInvestment
 
   //   Reset data
   const resetData = () => {
-    setAmount('');
-    setInterestRate('');
+    setMonthlyAmount('');
+    setInterest('');
     setTimePeriod('');
-    setInterestRate('');
+    setTimePeriod('');
     setMaturityAmount('');
-    setTotalAmount('');
+    setTotalInterest('');
     setTotalInvestment('');
   };
 
@@ -43,9 +55,6 @@ const RdCalculator = () => {
     calculateRD();
   };
   const calculateRD = () => {
-   
-
-
     const principal = parseFloat(monthlyAmount) * parseFloat(timePeriod);
     const rate = parseFloat(interest) / 100 / 12;
     const maturityAmount = principal * (1 + rate) * timePeriod + principal;
@@ -54,6 +63,31 @@ const RdCalculator = () => {
     setMaturityAmount(maturityAmount.toFixed(2));
     setTotalInterest(totalInterest.toFixed(2));
     setTotalInvestment(totalInvestment.toFixed(2));
+    insertData();
+  };
+
+  const insertData = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO RdCalculatorHistory (monthlyAmount, interest, timePeriod, maturityAmount, totalInterest, totalInvestment) VALUES (?, ?, ?, ? , ?, ?)',
+        [
+          monthlyAmount,
+          interest,
+          timePeriod,
+          maturityAmount,
+          totalInterest,
+          totalInvestment,
+        ],
+        // (_, result) => {
+        //   if (result.insertId !== undefined) {
+        //     Alert.alert('Success', 'Data inserted successfully!');
+        //     fetchData();
+        //   } else {
+        //     Alert.alert('Error', 'Failed to insert data!');
+        //   }
+        // },
+      );
+    });
   };
 
   // Calculation end
@@ -124,6 +158,13 @@ const RdCalculator = () => {
               name="Reset"
               onPress={resetData}
               srcPath={allImages.Reset}
+            />
+            <CalculateButton
+              name="History"
+              onPress={() => {
+                navigation.navigate('RdCalculatorHistory');
+              }}
+              srcPath={allImages.History}
             />
           </View>
         </View>

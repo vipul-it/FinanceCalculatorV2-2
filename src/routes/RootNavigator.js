@@ -38,6 +38,7 @@ import CompareLoanHistory from '../screen/CompareLoanHistory';
 import InterestCalculatorHistoryDate from '../screen/otherCalculator/InterestCalculatorHistoryDate';
 import InterestCalculatorHistoryPeriod from '../screen/otherCalculator/InterestCalculatorHistoryPeriod';
 import SipCalculatorHistory from '../screen/otherCalculator/SipCalculatorHistory';
+import RdCalculatorHistory from '../screen/otherCalculator/RdCalculatorHistory';
 
 const Stack = createNativeStackNavigator();
 
@@ -183,6 +184,11 @@ const RootNavigator = () => {
         <Stack.Screen
           name="SipCalculatorHistory"
           component={SipCalculatorHistory}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RdCalculatorHistory"
+          component={RdCalculatorHistory}
           options={{headerShown: false}}
         />
         
