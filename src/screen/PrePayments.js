@@ -20,10 +20,21 @@ import CustomTopLayout from './common/CustomTopLayout';
 import {allImages} from '../utils/images';
 import SubHeading from './common/SubHeading';
 import CalculateButton from './common/CalculateButton';
+import SQLite from 'react-native-sqlite-storage';
 
+const db = SQLite.openDatabase('mydb.db');
 
 const PrePayments = () => {
- 
+  useEffect(() => {
+    // Create the table if it doesn't exist
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS PrePaymentsHistoryPre (id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, interest REAL, currentEmi REAL, prePayment REAL, newEmi REAL, oldEmi REAL, newTenure REAL, oldTenure REAL, emiDifference REAL, tenureDifference REAL)',
+        [],
+      );
+    });
+  }, []);
+
   const navigation = useNavigation();
 
   const [amount, setAmount] = useState('');
@@ -38,8 +49,9 @@ const PrePayments = () => {
   const [tenureDifference, setTenureDifference] = useState('');
   const [prePayment, setPrePayment] = useState('');
 
+  // amount, interest, currentEmi, prePayment, newEmi, oldEmi, newTenure, oldTenure, emiDifference, tenureDifference
 
-  // amount interest currentEmi revisedIntrest
+  // amount, interest, currentEmi, revisedInterest, newEmi, oldEmi, newTenure, oldTenure, emiDifference, tenureDifference
 
   const [value, setValue] = useState(0);
   const renderItem = item => {
@@ -62,7 +74,6 @@ const PrePayments = () => {
     setOldTenure('');
     setEmiDifference('');
     setTenureDifference('');
-    
   };
   const resetDataPRI = () => {
     setAmount('');
@@ -75,7 +86,6 @@ const PrePayments = () => {
     setOldTenure('');
     setEmiDifference('');
     setTenureDifference('');
-    
   };
 
   const dummyData = [
@@ -91,7 +101,6 @@ const PrePayments = () => {
 
   const [selectedcolor, setSelected] = useState(1);
 
-
   const calculatePrePaymentROI = () => {
     // Convert input values to numbers
     const loanAmount = parseFloat(amount);
@@ -100,16 +109,24 @@ const PrePayments = () => {
     const revisedInterestRate = parseFloat(revisedInterest);
 
     // Calculate old tenure (months) and EMIs
-    const oldTenureMonths = Math.ceil(loanAmount / (initialEmi - (loanAmount * (initialInterest / 1200))));
-    const oldEmiAmount = Math.ceil((loanAmount * (initialInterest / 1200)) + initialEmi);
+    const oldTenureMonths = Math.ceil(
+      loanAmount / (initialEmi - loanAmount * (initialInterest / 1200)),
+    );
+    const oldEmiAmount = Math.ceil(
+      loanAmount * (initialInterest / 1200) + initialEmi,
+    );
 
     // Calculate new tenure (months) and EMIs
-    const newTenureMonths = Math.ceil(loanAmount / (initialEmi - (loanAmount * (revisedInterestRate / 1200))));
-    const newEmiAmount = Math.ceil((loanAmount * (revisedInterestRate / 1200)) + initialEmi);
+    const newTenureMonths = Math.ceil(
+      loanAmount / (initialEmi - loanAmount * (revisedInterestRate / 1200)),
+    );
+    const newEmiAmount = Math.ceil(
+      loanAmount * (revisedInterestRate / 1200) + initialEmi,
+    );
 
     // Calculate difference between old and new EMIs and tenures
-    const emiDifference =   newEmiAmount - oldEmiAmount;
-    const tenureDifference =   newTenureMonths - oldTenureMonths;
+    const emiDifference = newEmiAmount - oldEmiAmount;
+    const tenureDifference = newTenureMonths - oldTenureMonths;
 
     // Update state with calculated values
     setNewEmi(newEmiAmount.toString());
@@ -149,6 +166,7 @@ const PrePayments = () => {
     setNewTenure(newTenureMonths);
     setEmiDifference(emiDifference.toFixed(2));
     setTenureDifference(tenureDifference.toString());
+    insertDataPre();
   };
   const handleCalculateButtonPRI = () => {
     // Validate input values
@@ -166,8 +184,34 @@ const PrePayments = () => {
     }
     calculatePrePaymentROI();
   };
-  
- 
+
+  const insertDataPre = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO PrePaymentsHistoryPre (amount, interest, currentEmi, prePayment, newEmi, oldEmi, newTenure, oldTenure, emiDifference, tenureDifference) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+          amount,
+          interest,
+          currentEmi,
+          prePayment,
+          newEmi,
+          oldEmi,
+          newTenure,
+          oldTenure,
+          emiDifference,
+          tenureDifference,
+        ],
+        // (_, result) => {
+        //   if (result.insertId !== undefined) {
+        //     Alert.alert('Success', 'Data inserted successfully!');
+        //     fetchData();
+        //   } else {
+        //     Alert.alert('Error', 'Failed to insert data!');
+        //   }
+        // },
+      );
+    });
+  };
 
   return (
     <>
@@ -237,6 +281,7 @@ const PrePayments = () => {
                         onChangeText={setAmount}
                         placeholder="eg. 100000"
                         keyboardType="numeric"
+                        autoComplete="off"
                       />
                       <Text className="text-blackC">&#8377;</Text>
                     </View>
@@ -249,6 +294,7 @@ const PrePayments = () => {
                       onChangeText={setInterest}
                       placeholder="eg. 8"
                       keyboardType="numeric"
+                      autoComplete="off"
                     />
                     <Text className="text-blackC">&#37;</Text>
                   </View>
@@ -262,6 +308,7 @@ const PrePayments = () => {
                         onChangeText={setCurrentEmi}
                         placeholder="eg. 100000"
                         keyboardType="numeric"
+                        autoComplete="off"
                       />
                       <Text className="text-blackC">&#8377;</Text>
                     </View>
@@ -275,6 +322,7 @@ const PrePayments = () => {
                         onChangeText={setPrePayment}
                         placeholder="eg. 100000"
                         keyboardType="numeric"
+                        autoComplete="off"
                       />
                       <Text className="text-blackC">&#8377;</Text>
                     </View>
@@ -290,6 +338,13 @@ const PrePayments = () => {
                     name="Reset"
                     onPress={resetDataPRI}
                     srcPath={allImages.Reset}
+                  />
+                  <CalculateButton
+                    name="History"
+                    onPress={() => {
+                      navigation.navigate('PrePaymentsHistoryPre');
+                    }}
+                    srcPath={allImages.History}
                   />
                 </View>
               </View>
@@ -373,6 +428,7 @@ const PrePayments = () => {
                       onChangeText={setAmount}
                       placeholder="eg. 100000"
                       keyboardType="numeric"
+                      autoComplete="off"
                     />
                     <Text className="text-blackC">&#8377;</Text>
                   </View>
@@ -385,6 +441,7 @@ const PrePayments = () => {
                     onChangeText={setInterest}
                     placeholder="eg. 8"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <Text className="text-blackC">&#37;</Text>
                 </View>
@@ -398,6 +455,7 @@ const PrePayments = () => {
                       onChangeText={setCurrentEmi}
                       placeholder="eg. 100000"
                       keyboardType="numeric"
+                      autoComplete="off"
                     />
                     <Text className="text-blackC">&#8377;</Text>
                   </View>
@@ -410,6 +468,7 @@ const PrePayments = () => {
                     onChangeText={setRevisedInterest}
                     placeholder="eg. 8"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <Text className="text-blackC">&#37;</Text>
                 </View>
@@ -471,7 +530,7 @@ const PrePayments = () => {
                       New Tenure
                     </Text>
                     <Text className="text-primaryDark text-md text-center">
-                    {newTenure} Months
+                      {newTenure} Months
                     </Text>
                   </View>
 

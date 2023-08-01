@@ -10,12 +10,13 @@ import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import SQLite from 'react-native-sqlite-storage';
-import TopTwoIcon from '../common/TopTwoIcon';
-import {allImages} from '../../utils/images';
+import TopTwoIcon from './common/TopTwoIcon';
+import { allImages } from '../utils/images';
+
 
 const db = SQLite.openDatabase('mydb.db');
 
-const RdCalculatorHistory = () => {
+const PrePaymentsHistoryPre = () => {
   const navigation = useNavigation();
 
   const [data, setData] = useState([]);
@@ -25,7 +26,7 @@ const RdCalculatorHistory = () => {
   const deleteRecord = id => {
     db.transaction(tx => {
       tx.executeSql(
-        'DELETE FROM RdCalculatorHistory WHERE id = ?',
+        'DELETE FROM PrePaymentsHistoryPre WHERE id = ?',
         [id],
         (_, result) => {
           if (result.rowsAffected > 0) {
@@ -59,7 +60,7 @@ const RdCalculatorHistory = () => {
 
   const deleteAllRecords = () => {
     db.transaction(tx => {
-      tx.executeSql('DELETE FROM RdCalculatorHistory', [], (_, result) => {
+      tx.executeSql('DELETE FROM PrePaymentsHistoryPre', [], (_, result) => {
         if (result.rowsAffected > 0) {
           // Alert.alert('Success', 'All records deleted successfully!');
           fetchData();
@@ -72,7 +73,7 @@ const RdCalculatorHistory = () => {
 
   const fetchData = () => {
     db.transaction(tx => {
-      tx.executeSql('SELECT * FROM RdCalculatorHistory', [], (_, {rows}) => {
+      tx.executeSql('SELECT * FROM PrePaymentsHistoryPre', [], (_, {rows}) => {
         const len = rows.length;
         const tempData = [];
 
@@ -96,7 +97,7 @@ const RdCalculatorHistory = () => {
   return (
     <View className="flex-1 bg-whiteC">
       <TopTwoIcon
-        name="RD History"
+        name="Pre Payment History"
         onPressRight={handleDeleteDatabase}
         onPressLeft={() => {
           navigation.goBack();
@@ -119,23 +120,35 @@ const RdCalculatorHistory = () => {
                         source={allImages.Delete}
                       />
                     </TouchableOpacity>
-                    {/* monthlyAmount, interest, timePeriod, maturityAmount, totalInterest, totalInvestment */}
+                    {/* amount, interest, currentEmi, prePayment, newEmi, oldEmi, newTenure, oldTenure emiDifference, tenureDifference */}
                     <View>
                       <Text className="text-primaryHeading font-semibold ">
-                        Amount: &#8377; {item.monthlyAmount}
+                       Outsatandind Amount: &#8377; {item.amount}
                       </Text>
                       <Text className="text-primaryHeading font-semibold ">
-                        Interest Rate: % {item.interest}
+                       Current Interest Rate: % {item.interest}
                       </Text>
-                      <Text className="text-primaryHeading font-semibold ">
-                        Time Period: Months {item.timePeriod}
+                      <Text className="text-primaryHeading font-semibold">
+                        Current EMI: &#8377; {item.currentEmi}
+                      </Text>
+                      <Text className="text-primaryHeading font-semibold">
+                        Pre Payment Amount: &#8377; {item.prePayment}
                       </Text>
                       <Text className="text-primaryDark font-semibold">
-                        Maturity Amount: &#8377; {item.maturityAmount}
+                        New EMI: &#8377; {item.newEmi}, 
+                        Old EMI: &#8377; {item.oldEmi}
                       </Text>
                       <Text className="text-primaryDark font-semibold">
-                        Total Investment: &#8377; {item.totalInvestment}
+                        EMI Difference: &#8377; {item.emiDifference}
                       </Text>
+                      <Text className="text-primaryDark font-semibold">
+                        New Tenure: &#8377; {item.newTenure}, 
+                        Old Tenure: &#8377; {item.oldTenure}
+                      </Text>
+                      <Text className="text-primaryDark font-semibold">
+                        Tenure Difference: &#8377; {item.tenureDifference}
+                      </Text>
+                     
                     </View>
                   </View>
                   <View></View>
@@ -149,4 +162,4 @@ const RdCalculatorHistory = () => {
   );
 };
 
-export default RdCalculatorHistory;
+export default PrePaymentsHistoryPre;

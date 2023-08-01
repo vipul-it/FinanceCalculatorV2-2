@@ -242,6 +242,7 @@ const Emicalculator = () => {
                     onChangeText={text => setAmount(text)}
                     placeholder="eg. 100000"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <Text className="text-blackC">&#8377;</Text>
                 </View>
@@ -254,6 +255,7 @@ const Emicalculator = () => {
                   onChangeText={text => setInterest(text)}
                   placeholder="eg. 8"
                   keyboardType="numeric"
+                  autoComplete="off"
                 />
                 <Text className="text-blackC">&#37;</Text>
               </View>
@@ -266,6 +268,7 @@ const Emicalculator = () => {
                     onChangeText={text => setTenure(text)}
                     placeholder="eg. 5"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <View className="flex-row">
                     <Text className="text-blackC">Years</Text>
@@ -286,6 +289,7 @@ const Emicalculator = () => {
                     onChangeText={text => setAmount(text)}
                     placeholder="eg. 100000"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <Text className="text-blackC">&#8377;</Text>
                 </View>
@@ -298,6 +302,7 @@ const Emicalculator = () => {
                   onChangeText={text => setInterest(text)}
                   placeholder="eg. 8"
                   keyboardType="numeric"
+                  autoComplete="off"
                 />
                 <Text className="text-blackC">&#37;</Text>
               </View>
@@ -310,6 +315,7 @@ const Emicalculator = () => {
                     onChangeText={text => setTenure(text)}
                     placeholder="eg. 5"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <View className="flex-row">
                     <Text className="text-blackC">Years</Text>
@@ -330,6 +336,7 @@ const Emicalculator = () => {
                     onChangeText={text => setAmount(text)}
                     placeholder="eg. 100000"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <Text className="text-blackC">&#8377;</Text>
                 </View>
@@ -342,6 +349,7 @@ const Emicalculator = () => {
                   onChangeText={text => setInterest(text)}
                   placeholder="eg. 8"
                   keyboardType="numeric"
+                  autoComplete="off"
                 />
                 <Text className="text-blackC">&#37;</Text>
               </View>
@@ -354,6 +362,7 @@ const Emicalculator = () => {
                     onChangeText={text => setTenure(text)}
                     placeholder="eg. 5"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <View className="">
                     <Text className="text-blackC">Years</Text>
@@ -374,6 +383,7 @@ const Emicalculator = () => {
                     onChangeText={text => setAmount(text)}
                     placeholder="eg. 100000"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <Text className="text-blackC">&#8377;</Text>
                 </View>
@@ -386,6 +396,7 @@ const Emicalculator = () => {
                   onChangeText={text => setInterest(text)}
                   placeholder="eg. 8"
                   keyboardType="numeric"
+                  autoComplete="off"
                 />
                 <Text className="text-blackC">&#37;</Text>
               </View>
@@ -398,6 +409,7 @@ const Emicalculator = () => {
                     onChangeText={text => setTenure(text)}
                     placeholder="eg. 5"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <View className="flex-row">
                     <Text className="text-blackC">Years</Text>
@@ -418,6 +430,7 @@ const Emicalculator = () => {
                     onChangeText={text => setAmount(text)}
                     placeholder="eg. 100000"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <Text className="text-blackC">&#8377;</Text>
                 </View>
@@ -430,6 +443,7 @@ const Emicalculator = () => {
                   onChangeText={text => setInterest(text)}
                   placeholder="eg. 8"
                   keyboardType="numeric"
+                  autoComplete="off"
                 />
                 <Text className="text-blackC">&#37;</Text>
               </View>
@@ -442,6 +456,7 @@ const Emicalculator = () => {
                     onChangeText={text => setTenure(text)}
                     placeholder="eg. 5"
                     keyboardType="numeric"
+                    autoComplete="off"
                   />
                   <View className="flex-row">
                     <Text className="text-blackC">Years</Text>

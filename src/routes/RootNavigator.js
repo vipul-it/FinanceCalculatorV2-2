@@ -39,6 +39,7 @@ import InterestCalculatorHistoryDate from '../screen/otherCalculator/InterestCal
 import InterestCalculatorHistoryPeriod from '../screen/otherCalculator/InterestCalculatorHistoryPeriod';
 import SipCalculatorHistory from '../screen/otherCalculator/SipCalculatorHistory';
 import RdCalculatorHistory from '../screen/otherCalculator/RdCalculatorHistory';
+import PrePaymentsHistoryPre from '../screen/PrePaymentsHistoryPre';
 
 const Stack = createNativeStackNavigator();
 
@@ -189,6 +190,11 @@ const RootNavigator = () => {
         <Stack.Screen
           name="RdCalculatorHistory"
           component={RdCalculatorHistory}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="PrePaymentsHistoryPre"
+          component={PrePaymentsHistoryPre}
           options={{headerShown: false}}
         />
         

@@ -8,11 +8,10 @@ import {
   } from 'react-native';
   import React, {useEffect, useState} from 'react';
   import {useNavigation} from '@react-navigation/native';
-  
-  import SQLite from 'react-native-sqlite-storage';
-  import TopTwoIcon from '../common/TopTwoIcon';
+   import TopTwoIcon from '../common/TopTwoIcon';
   import {allImages} from '../../utils/images';
-  
+  import SQLite from 'react-native-sqlite-storage';
+
   const db = SQLite.openDatabase('mydb.db');
   
   const FdCalculatorHistory = () => {
