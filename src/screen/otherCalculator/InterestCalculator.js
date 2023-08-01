@@ -395,7 +395,7 @@ const InterestCalculator = () => {
                   <CalculateButton
                     name="History"
                     onPress={() => {
-                      navigation.navigate('InterestCalculatorHistory');
+                      navigation.navigate('InterestCalculatorHistoryPeriod');
                     }}
                     srcPath={allImages.History}
                   />
@@ -560,7 +560,7 @@ const InterestCalculator = () => {
                   <CalculateButton
                     name="History"
                     onPress={() => {
-                      navigation.navigate('InterestCalculatorHistory');
+                      navigation.navigate('InterestCalculatorHistoryPeriod');
                     }}
                     srcPath={allImages.History}
                   />

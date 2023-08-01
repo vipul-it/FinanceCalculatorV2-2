@@ -15,7 +15,7 @@ import {allImages} from '../../utils/images';
 
 const db = SQLite.openDatabase('mydb.db');
 
-const InterestCalculatorHistory = () => {
+const InterestCalculatorHistoryPeriod = () => {
   const navigation = useNavigation();
 
   const [data, setData] = useState([]);
@@ -165,4 +165,4 @@ const InterestCalculatorHistory = () => {
   );
 };
 
-export default InterestCalculatorHistory;
+export default InterestCalculatorHistoryPeriod;

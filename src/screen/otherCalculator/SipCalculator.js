@@ -7,7 +7,7 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import CustomTopLayout from '../common/CustomTopLayout';
 import {useNavigation} from '@react-navigation/native';
 import SubHeading from '../common/SubHeading';
@@ -15,20 +15,35 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CalculateButton from '../common/CalculateButton';
 import {allImages} from '../../utils/images';
 
+import SQLite from 'react-native-sqlite-storage';
+
+const db = SQLite.openDatabase('mydb.db');
+
 const SipCalculator = () => {
+  useEffect(() => {
+    // Create the table if it doesn't exist
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS SipCalculatorHistory (id INTEGER PRIMARY KEY AUTOINCREMENT,   totalInvestmentAmount REAL, expectedReturnRate REAL, years INTEGER, months INTEGER, investedAmount REAL, totalProfit REAL, totalReturn REAL)',
+        [],
+      );
+    });
+  }, []);
   const navigation = useNavigation();
 
   const [totalInvestmentAmount, setTotalInvestmentAmount] = useState('');
   const [expectedReturnRate, setExpectedReturnRate] = useState('');
-  const [years, setYears] = useState('');
-  const [months, setMonths] = useState('');
+  const [years, setYears] = useState('1');
+  const [months, setMonths] = useState('0');
   const [investedAmount, setInvestedAmount] = useState('');
   const [totalProfit, setTotalProfit] = useState('');
   const [totalReturn, setTotalReturn] = useState('');
 
+  // totalInvestmentAmount, expectedReturnRate, years, months, investedAmount, totalProfit, totalReturn
+
   //   Reset data
   const resetData = () => {
-    setInvestmentAmount('');
+    setInvestedAmount('');
     setExpectedReturnRate('');
     setYears('');
     setMonths('');
@@ -66,6 +81,27 @@ const SipCalculator = () => {
     setInvestedAmount(calculatedInvestedAmount.toFixed(2));
     setTotalProfit(calculatedTotalProfit.toFixed(2));
     setTotalReturn(calculatedTotalReturn.toFixed(2));
+
+    insertData();
+  };
+
+  const insertData = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO SipCalculatorHistory (totalInvestmentAmount, expectedReturnRate, years, months, investedAmount, totalProfit, totalReturn) VALUES (?, ?, ?, ? , ?, ?, ?)',
+        [
+          totalInvestmentAmount, expectedReturnRate, years, months, investedAmount, totalProfit, totalReturn
+        ],
+        // (_, result) => {
+        //   if (result.insertId !== undefined) {
+        //     Alert.alert('Success', 'Data inserted successfully!');
+        //     fetchData();
+        //   } else {
+        //     Alert.alert('Error', 'Failed to insert data!');
+        //   }
+        // },
+      );
+    });
   };
   // Calculation end
 
@@ -88,6 +124,7 @@ const SipCalculator = () => {
                 onChangeText={text => setTotalInvestmentAmount(text)}
                 placeholder="eg. 100000"
                 keyboardType="numeric"
+                autoComplete='off'
               />
               <Text className="text-blackC">&#8377;</Text>
             </View>
@@ -100,6 +137,7 @@ const SipCalculator = () => {
         onChangeText={text => setExpectedReturnRate(text)}
               placeholder="eg. 8"
               keyboardType="numeric"
+              autoComplete='off'
             />
             <Text className="text-blackC">&#37;</Text>
           </View>
@@ -111,6 +149,7 @@ const SipCalculator = () => {
               onChangeText={text => setYears(text)}
               placeholder="Years"
               keyboardType="numeric"
+              autoComplete='off'
             />
           </View>
           <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
@@ -120,6 +159,7 @@ const SipCalculator = () => {
         onChangeText={text => setMonths(text)}
               placeholder="Months"
               keyboardType="numeric"
+              autoComplete='off'
             />
           </View>
 
@@ -133,6 +173,13 @@ const SipCalculator = () => {
               name="Reset"
               onPress={resetData}
               srcPath={allImages.Reset}
+            />
+            <CalculateButton
+              name="History"
+              onPress={() => {
+                navigation.navigate('SipCalculatorHistory');
+              }}
+              srcPath={allImages.History}
             />
             
           </View>

@@ -1,5 +1,12 @@
-import {View, Text, TextInput, Image, Alert, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import CustomTopLayout from './common/CustomTopLayout';
 import SubHeading from './common/SubHeading';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -17,31 +24,59 @@ const ChangeCurrency = () => {
     setShowImage2(!showImage2);
   };
 
-  
-
   const [amountINR, setAmountINR] = useState('');
   const [amountUSD, setAmountUSD] = useState('');
+  const [apiINR, setApiINR] = useState('');
+  const [apiUSD, setApiUSD] = useState('');
 
-  const convertCurrency = async () => {
-    try {
-      const response = await axios.get(
-        'http://api.exchangeratesapi.io/latest?access_key=738525856d507c76cc213eafe08c6b3c'
-      );
-      
-      // Check if the API call was successful
-      if (response.data.result === 'success') {
-        const conversionRate = response.data.conversion_rates.USD;
-        const convertedAmount = parseFloat(amountINR) * conversionRate;
-        setAmountUSD(convertedAmount.toFixed(2));
-      } else {
-        Alert.alert('Error', 'Unable to fetch exchange rate data.');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Something went wrong. Please try again later.');
-    }
+  // const convertCurrency = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       'http://api.exchangeratesapi.io/latest?access_key=738525856d507c76cc213eafe08c6b3c'
+  //     );
+
+  //     // Check if the API call was successful
+  //     if (response.data.result === 'success') {
+  //       const conversionRate = response.data.conversion_rates.USD;
+  //       const convertedAmount = parseFloat(amountINR) * conversionRate;
+  //       setAmountUSD(convertedAmount.toFixed(2));
+  //     } else {
+  //       Alert.alert('Error', 'Unable to fetch exchange rate data.');
+  //     }
+  //   } catch (error) {
+  //     Alert.alert('Error', 'Something went wrong. Please try again later.');
+  //   }
+  // };
+
+  const getData = () => {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    fetch(
+      'http://api.exchangeratesapi.io/latest?access_key=738525856d507c76cc213eafe08c6b3c',
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(result => {
+        setApiUSD(result.rates.USD);
+        setApiINR(result.rates.INR);
+        console.log('========', apiUSD);
+        console.log('========', apiUSD);
+      })
+      .catch(error => console.log('error', error));
   };
 
-  
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const convertCurrency = () => {
+    const convertedAmount =
+      parseFloat(amountUSD) * parseFloat(apiINR) * parseFloat(apiUSD);
+    setAmountINR(convertedAmount.toFixed(2));
+  };
 
   return (
     <View>
@@ -60,7 +95,7 @@ const ChangeCurrency = () => {
               placeholder="eg. 10000"
               keyboardType="numeric"
               value={amountINR}
-        onChangeText={(text) => setAmountINR(text)}
+              onChangeText={text => setAmountINR(text)}
             />
           </View>
         </KeyboardAwareScrollView>
@@ -118,12 +153,11 @@ const ChangeCurrency = () => {
         </View>
         <Text className="text-center py-2 pt-5 text-lg font-semibold text-[#6C2929]">
           {amountINR} INR = {amountUSD} USD
-          
         </Text>
 
         <TouchableOpacity
           onPress={() => {
-            convertCurrency()
+            convertCurrency();
           }}
           className=" ">
           <View className=" text-whiteC mx-24 mt-5 py-2 px-3 rounded-md bg-primaryDark">
