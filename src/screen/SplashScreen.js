@@ -6,9 +6,10 @@ const SplashScreen = () => {
   const navigation = useNavigation();
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('Dashboard');
+      navigation.navigate('OnboardScreen1');
   },1000);
   },[]);
+
   return (
     <View className="flex-1">
       <StatusBar backgroundColor="#879DFF" />

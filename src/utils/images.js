@@ -41,6 +41,15 @@ import UsaFlag from '../assets/images/usaFlag.png';
 import IndianFlag from '../assets/images/indiaFlag.png';
 import ConverterArrow from '../assets/images/ConverterArrow.png';
 import RightArrow from '../assets/images/RightArrow.png';
+import Illustration1 from '../assets/images/Illustration1.png';
+import Illustration2 from '../assets/images/Illustration2.png';
+import Illustration3 from '../assets/images/Illustration3.png';
+import Slider1 from '../assets/images/Slider1.png';
+import Slider2 from '../assets/images/Slider2.png';
+import Slider3 from '../assets/images/Slider3.png';
+import Next1 from '../assets/images/Next1.png';
+import ArrowRightD from '../assets/images/ArrowRightD.png';
+
 
 
 
@@ -87,4 +96,12 @@ export const allImages = {
   IndianFlag: IndianFlag,
   UsaFlag: UsaFlag,
   RightArrow: RightArrow,
+  Illustration1: Illustration1,
+  Illustration2: Illustration2,
+  Illustration3: Illustration3,
+  Slider1: Slider1,
+  Slider2: Slider2,
+  Slider3: Slider3,
+  Next1: Next1,
+  ArrowRightD: ArrowRightD,
 };

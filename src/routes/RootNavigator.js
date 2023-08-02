@@ -41,6 +41,9 @@ import SipCalculatorHistory from '../screen/otherCalculator/SipCalculatorHistory
 import RdCalculatorHistory from '../screen/otherCalculator/RdCalculatorHistory';
 import PrePaymentsHistoryPre from '../screen/PrePaymentsHistoryPre';
 import PrePaymentsHistoryRoi from '../screen/PrePaymentsHistoryRoi';
+import OnboardScreen1 from '../screen/OnboardScreen1';
+import OnboardScreen2 from '../screen/OnboardScreen2';
+import OnboardScreen3 from '../screen/OnboardScreen3';
 
 const Stack = createNativeStackNavigator();
 
@@ -203,7 +206,22 @@ const RootNavigator = () => {
           component={PrePaymentsHistoryRoi}
           options={{headerShown: false}}
         />
-        
+        <Stack.Screen
+          name="OnboardScreen1"
+          component={OnboardScreen1}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="OnboardScreen2"
+          component={OnboardScreen2}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="OnboardScreen3"
+          component={OnboardScreen3}
+          options={{headerShown: false}}
+        />
+       
       </Stack.Navigator>
     </NavigationContainer>
   );

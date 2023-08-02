@@ -128,13 +128,21 @@ const EmiHistory = () => {
                       />
                     </TouchableOpacity>
 
+                    {/* amount,
+                    interest,
+                    tenure,
+                    monthlyEMI,
+                    totalInterest,
+                    totalPayment,
+                    loanAmountPercentage,
+                    totalInterestPercentage, */}
+
                     <View>
                       <Text className="text-primaryHeading font-semibold ">
-                        &#8377; {item.amount} with {item.interest}% for{' '}
-                        {item.tenure} years
+                        &#8377; {item.amount} with {item.interest}% for {item.tenure} years
                       </Text>
                       <Text className="text-primaryDark font-semibold">
-                        7 June 2023, 03:07 pm
+                       Monthly EMI {item.monthlyEMI}
                       </Text>
                     </View>
                   </View>
