@@ -40,6 +40,7 @@ import Calender from '../assets/images/calender.png';
 import UsaFlag from '../assets/images/usaFlag.png';
 import IndianFlag from '../assets/images/indiaFlag.png';
 import ConverterArrow from '../assets/images/ConverterArrow.png';
+import RightArrow from '../assets/images/RightArrow.png';
 
 
 
@@ -85,4 +86,5 @@ export const allImages = {
   ConverterArrow: ConverterArrow,
   IndianFlag: IndianFlag,
   UsaFlag: UsaFlag,
+  RightArrow: RightArrow,
 };

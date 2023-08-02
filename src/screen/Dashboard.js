@@ -44,7 +44,7 @@ const Dashboard = () => {
     <SafeAreaView className="">
       <StatusBar backgroundColor="#879DFF" />
       <View>
-        <View className="box-content  h-48 w-full rounded-b-[40px] bg-primaryC px-5 py-2 flex-row items-center -mt-12">
+        <View className="box-content  h-48 w-full rounded-b-[40px] bg-primaryC px-10 py-2 flex-row items-center -mt-12">
           <TouchableOpacity>
           <TouchableOpacity
               onPress={() => {
@@ -55,7 +55,7 @@ const Dashboard = () => {
               alt="menu"
             /></TouchableOpacity>
           </TouchableOpacity>
-          <Text className="text-whiteC text-2xl font-bold">
+          <Text className="text-whiteC text-center text-2xl font-bold">
             Finance Calculator
           </Text>
         </View>
@@ -106,7 +106,7 @@ const Dashboard = () => {
           </View>
         </View>
 
-        <View className="mx-5 pl-6">
+        <View className="mx-5 pl-5">
           <Text className=" my-4 text-primaryHeading text-2xl font-bold">
             Value of Your money
           </Text>

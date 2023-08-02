@@ -124,11 +124,11 @@ import {
                       <View>
                         <Text className="text-primaryHeading font-semibold ">
                           Amount &#8377; {item.amount}, Interest Rate {item.interestRate}
-                          %, 
+                          %
                         </Text>
   
                         <Text className="text-primaryHeading font-semibold ">
-                          Time Period Years{item.years}, Months {item.months}, Days {item.days}\
+                          Time Period Years{item.years}, Months {item.months}, Days {item.days}
                         </Text>
                         <Text className="text-primaryDark font-semibold">
                           Maturity Amount &#8377; {item.maturityAmount}
