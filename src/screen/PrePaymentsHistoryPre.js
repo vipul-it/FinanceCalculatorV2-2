@@ -26,7 +26,7 @@ const PrePaymentsHistoryPre = () => {
   const deleteRecord = id => {
     db.transaction(tx => {
       tx.executeSql(
-        'DELETE FROM PrePaymentsHistoryPre WHERE id = ?',
+        'DELETE FROM PrePaymentsHistoryP WHERE id = ?',
         [id],
         (_, result) => {
           if (result.rowsAffected > 0) {
@@ -60,7 +60,7 @@ const PrePaymentsHistoryPre = () => {
 
   const deleteAllRecords = () => {
     db.transaction(tx => {
-      tx.executeSql('DELETE FROM PrePaymentsHistoryPre', [], (_, result) => {
+      tx.executeSql('DELETE FROM PrePaymentsHistoryP', [], (_, result) => {
         if (result.rowsAffected > 0) {
           // Alert.alert('Success', 'All records deleted successfully!');
           fetchData();
@@ -73,7 +73,7 @@ const PrePaymentsHistoryPre = () => {
 
   const fetchData = () => {
     db.transaction(tx => {
-      tx.executeSql('SELECT * FROM PrePaymentsHistoryPre', [], (_, {rows}) => {
+      tx.executeSql('SELECT * FROM PrePaymentsHistoryP', [], (_, {rows}) => {
         const len = rows.length;
         const tempData = [];
 

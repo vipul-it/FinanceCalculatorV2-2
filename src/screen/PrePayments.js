@@ -29,7 +29,17 @@ const PrePayments = () => {
     // Create the table if it doesn't exist
     db.transaction(tx => {
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS PrePaymentsHistoryPre (id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, interest REAL, currentEmi REAL, prePayment REAL, newEmi REAL, oldEmi REAL, newTenure REAL, oldTenure REAL, emiDifference REAL, tenureDifference REAL)',
+        'CREATE TABLE IF NOT EXISTS PrePaymentsHistoryP (id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, interest REAL, currentEmi REAL, prePayment REAL, newEmi REAL, oldEmi REAL, newTenure REAL, oldTenure REAL, emiDifference REAL, tenureDifference REAL)',
+        [],
+      );
+    });
+  }, []);
+
+  useEffect(() => {
+    // Create the table if it doesn't exist
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS PrePaymentsHistoryRoi (id INTEGER PRIMARY KEY AUTOINCREMENT, amount REAL, interest REAL, currentEmi REAL, revisedInterest REAL, newEmi REAL, oldEmi REAL, newTenure REAL, oldTenure REAL, emiDifference REAL, tenureDifference REAL)',
         [],
       );
     });
@@ -135,6 +145,7 @@ const PrePayments = () => {
     setOldTenure(oldTenureMonths.toString());
     setEmiDifference(emiDifference.toString());
     setTenureDifference(tenureDifference.toString());
+    insertDataRoi();
   };
 
   const calculatePrePayment = () => {
@@ -188,12 +199,40 @@ const PrePayments = () => {
   const insertDataPre = () => {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO PrePaymentsHistoryPre (amount, interest, currentEmi, prePayment, newEmi, oldEmi, newTenure, oldTenure, emiDifference, tenureDifference) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'INSERT INTO PrePaymentsHistoryP (amount, interest, currentEmi, prePayment, newEmi, oldEmi, newTenure, oldTenure, emiDifference, tenureDifference) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [
           amount,
           interest,
           currentEmi,
           prePayment,
+          newEmi,
+          oldEmi,
+          newTenure,
+          oldTenure,
+          emiDifference,
+          tenureDifference,
+        ],
+        // (_, result) => {
+        //   if (result.insertId !== undefined) {
+        //     Alert.alert('Success', 'Data inserted successfully!');
+        //     fetchData();
+        //   } else {
+        //     Alert.alert('Error', 'Failed to insert data!');
+        //   }
+        // },
+      );
+    });
+  };
+
+  const insertDataRoi = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO PrePaymentsHistoryRoi (amount, interest, currentEmi, revisedInterest, newEmi, oldEmi, newTenure, oldTenure, emiDifference, tenureDifference) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+          amount,
+          interest,
+          currentEmi,
+          revisedInterest,
           newEmi,
           oldEmi,
           newTenure,
@@ -460,7 +499,7 @@ const PrePayments = () => {
                     <Text className="text-blackC">&#8377;</Text>
                   </View>
                 </KeyboardAwareScrollView>
-                <SubHeading name="Revised Intrest Rate" />
+                <SubHeading name="Revised Interest Rate" />
                 <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
                   <TextInput
                     className="w-full text-blackC"
@@ -483,6 +522,13 @@ const PrePayments = () => {
                     name="Reset"
                     onPress={resetDataROI}
                     srcPath={allImages.Reset}
+                  />
+                  <CalculateButton
+                    name="History"
+                    onPress={() => {
+                      navigation.navigate('PrePaymentsHistoryRoi');
+                    }}
+                    srcPath={allImages.History}
                   />
                 </View>
               </View>

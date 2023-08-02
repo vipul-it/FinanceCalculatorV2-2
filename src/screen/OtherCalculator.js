@@ -15,12 +15,12 @@ const OtherCalculator = () => {
         name="Other Calculator"
       />
       <Text className="my-0 -mt-1"></Text>
-      <ScrollView showsHorizontalScrollIndicator={false} className="mx-5">
+      <ScrollView showsHorizontalScrollIndicator={false}  className="mx-5">
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('DiscountCalculator');
           }}>
-          <View className="my-1 px-1">
+          <View className="my-1 ">
             <Image
               className=" w-[100%] h-[105px]"
               source={allImages.Discount}
@@ -31,7 +31,7 @@ const OtherCalculator = () => {
           onPress={() => {
             navigation.navigate('FdCalculator');
           }}>
-          <View className="my-1 px-1">
+          <View className="my-1">
             <Image className=" w-[100%] h-[105px]" source={allImages.FD} />
           </View>
         </TouchableOpacity>
@@ -39,7 +39,7 @@ const OtherCalculator = () => {
           onPress={() => {
             navigation.navigate('TipCalculator');
           }}>
-          <View className="my-1 px-1">
+          <View className="my-1">
             <Image className=" w-[100%] h-[105px]" source={allImages.Tip} />
           </View>
         </TouchableOpacity>
@@ -47,7 +47,7 @@ const OtherCalculator = () => {
           onPress={() => {
             navigation.navigate('SipCalculator');
           }}>
-          <View className="my-1 px-1">
+          <View className="my-1">
             <Image className=" w-[100%] h-[105px]" source={allImages.SIP} />
           </View>
         </TouchableOpacity>
@@ -55,7 +55,7 @@ const OtherCalculator = () => {
           onPress={() => {
             navigation.navigate('RdCalculator');
           }}>
-          <View className="my-1 px-1">
+          <View className="my-1">
             <Image className=" w-[100%] h-[105px]" source={allImages.RD} />
           </View>
         </TouchableOpacity>
@@ -63,7 +63,7 @@ const OtherCalculator = () => {
           onPress={() => {
             navigation.navigate('InterestCalculator');
           }}>
-          <View className="my-1 px-1">
+          <View className="my-1">
             <Image
               className=" w-[100%] h-[105px]"
               source={allImages.Interest}
