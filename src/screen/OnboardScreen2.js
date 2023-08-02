@@ -25,7 +25,7 @@ const OnboardScreen2 = () => {
       </View>
       <View className="z-10 flex items-center">
         <Image
-          className="-mb-24 ml-[4%]  w-[280px] h-[282px]"
+          className="-mb-20 ml-[4%] mt-4  w-[300px] h-[292px]"
           source={allImages.Illustration2}
         />
       </View>
@@ -35,15 +35,15 @@ const OnboardScreen2 = () => {
           <Image className="w-[57px] h-[8px] " source={allImages.Slider2} />
         </View>
         <View className="flex-row justify-center mt-8">
-          <Text className="text-whiteC font-bold text-2xl  tracking-widest">
+          <Text className="text-whiteC font-bold text-3xl  tracking-widest">
             Calculate{' '}
           </Text>
-          <Text className="text-whiteC font-normal text-xl tracking-widest">
+          <Text className="text-whiteC font-normal text-2xl tracking-widest">
             everything{' '}
           </Text>
         </View>
         <View className="flex-row justify-center">
-          <Text className="text-whiteC font-normal text-xl tracking-widest	">
+          <Text className="text-whiteC font-normal text-2xl tracking-widest	">
             in one place!
           </Text>
         </View>

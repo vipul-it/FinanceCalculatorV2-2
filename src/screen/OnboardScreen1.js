@@ -20,7 +20,7 @@ const OnboardScreen1 = () => {
       </View>
       <View className="z-10 flex items-center">
         <Image
-          className="-mb-24 ml-[4%]  w-[342px] h-[305px]"
+          className="-mb-20 mt-2 ml-[4%]  w-[342px] h-[305px]"
           source={allImages.Illustration1}
         />
       </View>
@@ -30,15 +30,15 @@ const OnboardScreen1 = () => {
           <Image className="w-[57px] h-[8px] " source={allImages.Slider1} />
         </View>
         <View className="flex-row justify-center mt-8">
-          <Text className="text-whiteC font-bold text-2xl  tracking-widest">
+          <Text className="text-whiteC font-bold text-3xl  tracking-widest">
             Take control{' '}
           </Text>
-          <Text className="text-whiteC font-normal text-xl tracking-widest">
+          <Text className="text-whiteC font-normal text-2xl tracking-widest">
             of your{' '}
           </Text>
         </View>
         <View className="flex-row justify-center">
-          <Text className="text-whiteC font-normal text-xl tracking-widest	">
+          <Text className="text-whiteC font-normal text-2xl tracking-widest	">
             finances today!
           </Text>
         </View>

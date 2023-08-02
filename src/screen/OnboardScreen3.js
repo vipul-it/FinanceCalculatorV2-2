@@ -25,7 +25,7 @@ const OnboardScreen3 = () => {
       </View>
       <View className="z-10 flex items-center">
         <Image
-          className="-mb-24 ml-[4%]  w-[257px] h-[265px]"
+          className="-mb-24 ml-[4%] mt-14  w-[257px] h-[265px]"
           source={allImages.Illustration3}
         />
       </View>
@@ -35,18 +35,18 @@ const OnboardScreen3 = () => {
           <Image className="w-[57px] h-[8px] " source={allImages.Slider3} />
         </View>
         <View className="flex-row justify-center mt-8">
-          <Text className="text-whiteC font-normal text-xl tracking-widest">
+          <Text className="text-whiteC font-normal text-2xl tracking-widest">
             Find{' '}
           </Text>
-          <Text className="text-whiteC font-bold text-2xl  tracking-widest">
+          <Text className="text-whiteC font-bold text-3xl  tracking-widest">
             Banks and
           </Text>
         </View>
         <View className="flex-row justify-center">
-          <Text className="text-whiteC font-bold text-2xl tracking-widest	">
+          <Text className="text-whiteC font-bold text-3xl tracking-widest	">
             ATMs{' '}
           </Text>
-          <Text className="text-whiteC font-normal text-xl tracking-widest">
+          <Text className="text-whiteC font-normal text-2xl tracking-widest">
             around you!
           </Text>
         </View>
