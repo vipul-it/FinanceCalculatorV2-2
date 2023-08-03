@@ -43,10 +43,10 @@ const SipCalculator = () => {
 
   //   Reset data
   const resetData = () => {
-    setInvestedAmount('');
+    totalInvestmentAmount('');
     setExpectedReturnRate('');
-    setYears('');
-    setMonths('');
+    setYears('1');
+    setMonths('0');
     setTotalProfit('');
     setTotalReturn('');
   };
@@ -63,24 +63,31 @@ const SipCalculator = () => {
       years === '' ||
       months === ''
     ) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert('Error', 'Please fill empty fields');
       return;
     }
 
-    const totalMonths = parseInt(years) * 12 + parseInt(months);
-    const monthlyInvestment = parseFloat(totalInvestmentAmount) / totalMonths;
+    // Convert inputs to numbers
+    const P = parseFloat(totalInvestmentAmount);
+    const i = parseFloat(expectedReturnRate) / 100 / 12;
+    const n = parseInt(years) * 12 + parseInt(months);
 
-    const compoundInterest =
-      Math.pow(1 + parseFloat(expectedReturnRate) / 100, totalMonths) - 1;
+    // Calculate the maturity amount (M) using the formula
+    const M = P * ((Math.pow(1 + i, n) - 1) / i) * (1 + i);
 
-    const calculatedInvestedAmount = monthlyInvestment * totalMonths;
-    const calculatedTotalProfit = calculatedInvestedAmount * compoundInterest;
-    const calculatedTotalReturn =
-      calculatedInvestedAmount + calculatedTotalProfit;
-
-    setInvestedAmount(calculatedInvestedAmount.toFixed(2));
-    setTotalProfit(calculatedTotalProfit.toFixed(2));
-    setTotalReturn(calculatedTotalReturn.toFixed(2));
+    // Update the state with the calculated values
+    setInvestedAmount(P * n);
+    const tReturn = M - P * n;
+    setTotalProfit(
+      tReturn.toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      }),
+    );
+    setTotalReturn(
+      M.toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      }),
+    );
 
     insertData();
   };
@@ -90,7 +97,13 @@ const SipCalculator = () => {
       tx.executeSql(
         'INSERT INTO SipCalculatorHistory (totalInvestmentAmount, expectedReturnRate, years, months, investedAmount, totalProfit, totalReturn) VALUES (?, ?, ?, ? , ?, ?, ?)',
         [
-          totalInvestmentAmount, expectedReturnRate, years, months, investedAmount, totalProfit, totalReturn
+          totalInvestmentAmount,
+          expectedReturnRate,
+          years,
+          months,
+          investedAmount,
+          totalProfit,
+          totalReturn,
         ],
         // (_, result) => {
         //   if (result.insertId !== undefined) {
@@ -115,7 +128,7 @@ const SipCalculator = () => {
       />
       <ScrollView>
         <View className="mx-5 mt-2">
-          <SubHeading name="Investment Amount" />
+          <SubHeading name="Monthly Investment Amount" />
           <KeyboardAwareScrollView>
             <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
               <TextInput
@@ -124,7 +137,7 @@ const SipCalculator = () => {
                 onChangeText={text => setTotalInvestmentAmount(text)}
                 placeholder="eg. 100000"
                 keyboardType="numeric"
-                autoComplete='off'
+                autoComplete="off"
               />
               <Text className="text-blackC">&#8377;</Text>
             </View>
@@ -134,33 +147,36 @@ const SipCalculator = () => {
             <TextInput
               className="w-full text-blackC"
               value={expectedReturnRate}
-        onChangeText={text => setExpectedReturnRate(text)}
+              onChangeText={text => setExpectedReturnRate(text)}
               placeholder="eg. 8"
               keyboardType="numeric"
-              autoComplete='off'
+              autoComplete="off"
             />
             <Text className="text-blackC">&#37;</Text>
           </View>
           <SubHeading name="Time Period" />
-          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
+          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5 pr-12">
             <TextInput
-              className="w-[25%] text-blackC"
+              className="w-full text-blackC"
               value={years}
-              onChangeText={text => setYears(text)}
+              onChangeText={setYears}
               placeholder="Years"
               keyboardType="numeric"
-              autoComplete='off'
+              autoComplete="off"
             />
+            <Text className="text-blackC ">Years</Text>
           </View>
-          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
+
+          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5 pr-14">
             <TextInput
               className="w-full text-blackC"
               value={months}
-        onChangeText={text => setMonths(text)}
+              onChangeText={setMonths}
               placeholder="Months"
               keyboardType="numeric"
-              autoComplete='off'
+              autoComplete="off"
             />
+            <Text className="text-blackC ">Months</Text>
           </View>
 
           <View className="flex-row justify-evenly my-12">
@@ -181,7 +197,6 @@ const SipCalculator = () => {
               }}
               srcPath={allImages.History}
             />
-            
           </View>
         </View>
 
@@ -194,7 +209,10 @@ const SipCalculator = () => {
           <View className="flex-row justify-between mx-10 items-center">
             <Text className="text-whiteC pt-2 text-lg ">Invested Amount</Text>
             <Text className="text-primaryHeading text-lg ">
-              &#8377; {investedAmount}
+              &#8377;{' '}
+              {investedAmount.toLocaleString(undefined, {
+                maximumFractionDigits: 0,
+              })}
             </Text>
           </View>
           <View className="flex-row justify-between mx-10 items-center">

@@ -33,10 +33,10 @@ const FdCalculator = () => {
   const navigation = useNavigation();
   const [amount, setAmount] = useState('');
   const [interestRate, setInterestRate] = useState('');
-  const [years, setYears] = useState('');
+  const [years, setYears] = useState('1');
   const [months, setMonths] = useState('0');
   const [days, setDays] = useState('0');
-  const [maturityAmount, setMaturityAmount] = useState('');
+  const [maturityAmount, setMaturityAmount] = useState('0');
 
   // amount, interestRate, years, months, days, maturityAmount
 
@@ -57,40 +57,17 @@ const FdCalculator = () => {
   const calculateMaturityAmount = () => {
     // Validate input values
     if (!amount || !interestRate || !years) {
-      Alert.alert(
-        'Validation Error',
-        'Please enter amount, interest rate, and number of years.',
-      );
+      Alert.alert('Validation Error', 'Please enter empty fields.');
       return;
     }
 
     const principal = parseFloat(amount);
     const rate = parseFloat(interestRate);
-    const totalYears = parseInt(years);
-    const totalMonths = parseInt(months || '0');
-    const totalDays = parseInt(days || '0');
+    const timeInYears =
+      parseFloat(years) + parseFloat(months) / 12 + parseFloat(days) / 365;
 
-    // Validate numeric input
-    if (
-      isNaN(principal) ||
-      isNaN(rate) ||
-      isNaN(totalYears) ||
-      isNaN(totalMonths) ||
-      isNaN(totalDays)
-    ) {
-      Alert.alert('Validation Error', 'Please enter all fields.');
-      return;
-    }
-
-    // Calculate maturity amount
-    const totalMonthsInYears = totalYears * 12;
-    const totalMonthsInPeriod =
-      totalMonthsInYears + totalMonths + totalDays / 30;
-    const interest = (principal * rate * totalMonthsInPeriod) / (12 * 100);
-    const maturity = principal + interest;
-
-    // Update state variable
-    setMaturityAmount(maturity.toFixed(2));
+    const maturityAmount = principal * Math.pow(1 + rate / 100, timeInYears);
+    setMaturityAmount(maturityAmount);
 
     insertData();
   };
@@ -133,7 +110,7 @@ const FdCalculator = () => {
                 onChangeText={setAmount}
                 placeholder="eg. 100000"
                 keyboardType="numeric"
-                autoComplete='off'
+                autoComplete="off"
               />
               <Text className="text-blackC">&#8377;</Text>
             </View>
@@ -146,40 +123,44 @@ const FdCalculator = () => {
               onChangeText={setInterestRate}
               placeholder="eg. 8"
               keyboardType="numeric"
-              autoComplete='off'
+              autoComplete="off"
             />
             <Text className="text-blackC">&#37;</Text>
           </View>
           <SubHeading name="Time Period" />
-          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
+          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5 pr-12">
             <TextInput
-              className="w-[25%] text-blackC"
+              className="w-full text-blackC"
               value={years}
               onChangeText={setYears}
               placeholder="Years"
               keyboardType="numeric"
-              autoComplete='off'
+              autoComplete="off"
             />
+            <Text className="text-blackC ">Years</Text>
           </View>
-          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
+
+          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5 pr-14">
             <TextInput
               className="w-full text-blackC"
               value={months}
               onChangeText={setMonths}
               placeholder="Months"
               keyboardType="numeric"
-              autoComplete='off'
+              autoComplete="off"
             />
+            <Text className="text-blackC ">Months</Text>
           </View>
-          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
+          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5 pr-12">
             <TextInput
               className="w-full text-blackC"
               value={days}
               onChangeText={setDays}
               placeholder="Days"
               keyboardType="numeric"
-              autoComplete='off'
+              autoComplete="off"
             />
+            <Text className="text-blackC">Days</Text>
           </View>
 
           <View className="flex-row justify-evenly my-12">
@@ -210,9 +191,21 @@ const FdCalculator = () => {
           />
 
           <View className="flex-row justify-between mx-10 items-center">
+            <Text className="text-whiteC pt-2 text-lg ">Est. Returns</Text>
+            <Text className="text-primaryHeading text-lg ">
+              &#8377;{' '}
+              {(maturityAmount - amount).toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+              })}
+            </Text>
+          </View>
+          <View className="flex-row justify-between mx-10 items-center">
             <Text className="text-whiteC pt-2 text-lg ">Maturity Amount</Text>
             <Text className="text-primaryHeading text-lg ">
-              &#8377; {maturityAmount}
+              &#8377;{' '}
+              {maturityAmount.toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+              })}
             </Text>
           </View>
         </View>

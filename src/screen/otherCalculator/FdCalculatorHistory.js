@@ -135,6 +135,9 @@ const FdCalculatorHistory = () => {
                           Days {item.days}
                         </Text>
                         <Text className="text-primaryDark font-semibold">
+                          Est. Returns &#8377; {item.maturityAmount - item.amount}
+                        </Text>
+                        <Text className="text-primaryDark font-semibold">
                           Maturity Amount &#8377; {item.maturityAmount}
                         </Text>
                       </View>
