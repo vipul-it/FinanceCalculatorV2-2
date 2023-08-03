@@ -35,18 +35,18 @@ const OnboardScreen3 = () => {
           <Image className="w-[57px] h-[8px] " source={allImages.Slider3} />
         </View>
         <View className="flex-row justify-center mt-8">
-          <Text className="text-whiteC font-normal text-2xl tracking-widest">
+          <Text className="text-whiteC font-[300] text-[28px] tracking-wider">
             Find{' '}
           </Text>
-          <Text className="text-whiteC font-bold text-3xl  tracking-widest">
+          <Text className="text-whiteC font-[800] text-[32px]  tracking-widest leading-normal">
             Banks and
           </Text>
         </View>
         <View className="flex-row justify-center">
-          <Text className="text-whiteC font-bold text-3xl tracking-widest	">
+          <Text className="text-whiteC font-[800] text-[32px]  tracking-widest leading-normal">
             ATMs{' '}
           </Text>
-          <Text className="text-whiteC font-normal text-2xl tracking-widest">
+          <Text className="text-whiteC font-[300] text-[28px] tracking-wider">
             around you!
           </Text>
         </View>
@@ -58,7 +58,7 @@ const OnboardScreen3 = () => {
             }}>
             <Image
               className="absolute top-24 right-8 w-[120px] h-[45px]"
-              source={allImages.Next1}
+              source={allImages.Next3}
             />
           </TouchableOpacity>
         </View>

@@ -1,23 +1,57 @@
-import { Image, StatusBar, View} from 'react-native'
-import React, { useEffect } from 'react'
-import { useNavigation } from '@react-navigation/native';
+import {Image, StatusBar, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate('OnboardScreen1');
-  },1000);
-  },[]);
+      completeOnboarding();
+    }, 1000);
+  }, []);
+
+  const completeOnboarding = async () => {
+    // Set the onboarding flag to true in AsyncStorage
+    try {
+      await AsyncStorage.setItem('@onboarding_complete', 'true');
+      [];
+    } catch (error) {
+      // Handle AsyncStorage error
+      console.log('Error saving onboarding status: ', error);
+    }
+  };
+
+  useEffect(() => {
+    // Check if onboarding flag is set, if so, skip onboarding and navigate to MainApp
+    const checkOnboardingStatus = async () => {
+      try {
+        const onboardingStatus = await AsyncStorage.getItem(
+          '@onboarding_complete',
+        );
+        if (onboardingStatus === 'true') {
+          navigation.navigate('Dashboard'); // Replace 'MainApp' with your main app screen name
+        } else {
+          navigation.navigate('OnboardScreen1'); // Replace 'Onboarding' app screen
+        }
+      } catch (error) {
+        // Handle AsyncStorage error
+        console.log('Error getting onboarding status: ', error);
+      }
+    };
+
+    checkOnboardingStatus();
+  }, []);
 
   return (
     <View className="flex-1">
       <StatusBar backgroundColor="#879DFF" />
-     <Image source={require('../assets/images/SplashScreen.png')}
-     style={{width:"100%",height:"100%"}}
-     />
+      <Image
+        source={require('../assets/images/SplashScreen.png')}
+        style={{width: '100%', height: '100%'}}
+      />
     </View>
-  )
-}
+  );
+};
 
-export default SplashScreen
+export default SplashScreen;

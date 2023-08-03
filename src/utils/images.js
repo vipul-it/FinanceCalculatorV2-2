@@ -49,6 +49,7 @@ import Slider2 from '../assets/images/Slider2.png';
 import Slider3 from '../assets/images/Slider3.png';
 import Next1 from '../assets/images/Next1.png';
 import ArrowRightD from '../assets/images/ArrowRightD.png';
+import Next3 from '../assets/images/Next3.png';
 
 
 
@@ -103,5 +104,6 @@ export const allImages = {
   Slider2: Slider2,
   Slider3: Slider3,
   Next1: Next1,
+  Next3: Next3,
   ArrowRightD: ArrowRightD,
 };

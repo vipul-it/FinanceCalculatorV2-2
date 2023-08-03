@@ -30,15 +30,15 @@ const OnboardScreen1 = () => {
           <Image className="w-[57px] h-[8px] " source={allImages.Slider1} />
         </View>
         <View className="flex-row justify-center mt-8">
-          <Text className="text-whiteC font-bold text-3xl  tracking-widest">
+          <Text className="text-whiteC font-[800] text-[32px]  tracking-widest">
             Take control{' '}
           </Text>
-          <Text className="text-whiteC font-normal text-2xl tracking-widest">
+          <Text className="text-whiteC font-[300] text-[28px] tracking-wider">
             of your{' '}
           </Text>
         </View>
         <View className="flex-row justify-center">
-          <Text className="text-whiteC font-normal text-2xl tracking-widest	">
+          <Text className="text-whiteC font-[300] text-3xl tracking-wider">
             finances today!
           </Text>
         </View>
