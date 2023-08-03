@@ -50,14 +50,14 @@ const OnboardScreen3 = () => {
             around you!
           </Text>
         </View>
-        <View className="flex-row justify-between	 mx-10">
+        <View className="flex-row justify-between	relative">
           <Text></Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('Dashboard');
             }}>
             <Image
-              className="mt-24 w-[136px] h-[53px]"
+              className="absolute top-24 right-8 w-[120px] h-[45px]"
               source={allImages.Next1}
             />
           </TouchableOpacity>
