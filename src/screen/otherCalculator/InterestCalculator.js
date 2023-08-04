@@ -61,6 +61,11 @@ const InterestCalculator = () => {
   const [selectedDateFrom, setSelectedDateFrom] = useState(new Date());
   const [selectedDateTo, setSelectedDateTo] = useState(new Date());
 
+  const [fromDate, SetFromDate] =useState('');
+  const [toDate, SetToDate] =useState('');
+
+  
+
   // Format Date From
   const formatSelectedDateFrom = () => {
     const options = {year: 'numeric', month: '2-digit', day: '2-digit'};
@@ -75,6 +80,11 @@ const InterestCalculator = () => {
       .toLocaleDateString(undefined, options)
       .replace(/\//g, '-');
   };
+
+  
+
+  console.log("aas",formatSelectedDateFrom(selectedDateFrom));
+  console.log("===",new Date());
 
   const [amount, setAmount] = useState('');
   const [interest, setInterest] = useState('');
@@ -136,46 +146,91 @@ const InterestCalculator = () => {
   ];
 
   const calculateInterestPeriod = () => {
-    const principle = parseFloat(amount);
-    const rate = parseFloat(interest) / 100;
-    const compoundPeriods = parseInt(compoundInterval);
-    const totalMonths = parseInt(years) * 12 + parseInt(months);
-    const compoundFrequency = totalMonths / compoundPeriods;
 
-    const amountWithInterest =
-      principle * Math.pow(1 + rate / compoundFrequency, compoundFrequency);
-    const calculatedInterest = amountWithInterest - principle;
 
-    setPrincipleAmount(principle.toFixed(2));
-    setTotalInterest(calculatedInterest.toFixed(2));
-    setTotalAmount(amountWithInterest.toFixed(2));
+
+// Function to calculate the difference between two dates
+const getDateDifference = (toDate, fromDate) => {
+  // Parse the dates using moment
+  const toDateMoment = moment(toDate, 'MM-DD-YYYY');
+  const fromDateMoment = moment(fromDate, 'MM-DD-YYYY');
+
+  // Calculate the difference in years, months, and days
+  const years = toDateMoment.diff(fromDateMoment, 'years');
+  fromDateMoment.add(years, 'years');
+  const months = toDateMoment.diff(fromDateMoment, 'months');
+  fromDateMoment.add(months, 'months');
+  const days = toDateMoment.diff(fromDateMoment, 'days');
+
+  return { years, months, days };
+};
+
+// Example usage
+// const toDate = '08-04-2024';
+// const fromDate = '08-04-2023';
+const { years, months, days } = getDateDifference(toDate, fromDate);
+
+console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
+
+
+    const P = parseFloat(amount);
+    const DPamount = parseFloat(amount);
+    const r = parseFloat(interest) / 100;
+    const n = parseInt(compoundInterval);
+    const t = parseFloat(years) + parseFloat(months) / 12;
+    console.log(P, r, n, t);
+    console.log(amount.toLocaleString());
+
+    const A = P * Math.pow(1 + r / n, n * t);
+    const compoundInterest = A - P;
+
+    setPrincipleAmount(
+      DPamount.toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      }),
+    );
+
+    setTotalInterest(
+      compoundInterest.toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      }),
+    );
+    setTotalAmount(
+      A.toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      }),
+    );
   };
 
   // Date wise calculation
   const calculateInterestDate = () => {
-    const dparsedAmount = parseInt(damount);
-    const dparsedInterest = parseInt(dinterest);
-    const dparsedCompoundInterval = parseInt(dcompoundInterval);
-    const dparsedFromDate = new Date(selectedDateFrom);
-    const dparsedToDate = new Date(selectedDateTo);
+    const P = parseFloat(damount);
+    const Pamount = parseFloat(damount);
+    const r = parseFloat(dinterest) / 100;
+    const n = parseInt(dcompoundInterval);
+    const t = parseFloat(years) + parseFloat(months) / 12;
+    console.log(P, r, n, t);
+    console.log(amount.toLocaleString());
 
-    // Calculate the time in years
-    const dtimeInYears =
-      (dparsedToDate - dparsedFromDate) / (1000 * 60 * 60 * 24 * 365);
+    const A = P * Math.pow(1 + r / n, n * t);
+    const compoundInterest = A - P;
 
-    // Calculate the principal amount
-    const dprincipleAmount = dparsedAmount;
+    setDPrincipleAmount(
+      Pamount.toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      }),
+    );
 
-    // Calculate the total interest
-    const dtotalInterest =
-      (dprincipleAmount * dparsedInterest * dtimeInYears) / 100;
-
-    // Calculate the total amount
-    const dtotalAmount = dprincipleAmount + dtotalInterest;
-
-    setDPrincipleAmount(dprincipleAmount.toFixed(2));
-    setDTotalInterest(dtotalInterest.toFixed(2));
-    setDTotalAmount(dtotalAmount.toFixed(2));
+    setDTotalInterest(
+      compoundInterest.toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      }),
+    );
+    setDTotalAmount(
+      A.toLocaleString(undefined, {
+        maximumFractionDigits: 0,
+      }),
+    );
   };
 
   const handleCalculateButtonPeriod = () => {
@@ -484,7 +539,7 @@ const InterestCalculator = () => {
                   date={selectedDateFrom}
                   onConfirm={selectedDateFrom => {
                     setOpenFromDate(false);
-                    setSelectedDateFrom(selectedDateFrom);
+                    setSelectedDateFrom(formatSelectedDateFrom(selectedDateFrom));
                   }}
                   onCancel={() => {
                     setOpenFromDate(false);

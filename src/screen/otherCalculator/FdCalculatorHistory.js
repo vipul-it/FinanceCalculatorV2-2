@@ -18,7 +18,6 @@ const FdCalculatorHistory = () => {
   const navigation = useNavigation();
 
   const [data, setData] = useState([]);
-  const [selected, setSelected] = useState(true);
 
   // alert(JSON.stringify(data))
 
@@ -104,58 +103,51 @@ const FdCalculatorHistory = () => {
         }}
       />
       <Text className="py-1"></Text>
-      {selected ? (
-        <View className="">
-          <ScrollView className="mb-28">
-            <View style={{flex: 1}}>
-              {data.map(item => (
-                <View key={item.id}>
-                  <View className="flex-row border-[1px] border-Cgray50 justify-between mx-5 items-center rounded-lg p-4 my-2">
-                    <View className="flex-row  items-center">
-                      <TouchableOpacity
-                        onPress={() => deleteRecord(item.id)}
-                        className=" mr-[20px]">
-                        <Image
-                          className="w-[14px] h-[20px]"
-                          style={{tintColor: '#1F3CFE'}}
-                          source={allImages.Delete}
-                        />
-                      </TouchableOpacity>
 
-                      {/* amount, interestRate, years, months, days, maturityAmount */}
+      <View className="">
+        <ScrollView className="mb-28">
+          <View style={{flex: 1}}>
+            {data.map(item => (
+              <View key={item.id}>
+                <View className="flex-row border-[1px] border-Cgray50 justify-between mx-5 items-center rounded-lg p-4 my-2">
+                  <View className="flex-row  items-center">
+                    <TouchableOpacity
+                      onPress={() => deleteRecord(item.id)}
+                      className=" mr-[20px]">
+                      <Image
+                        className="w-[14px] h-[20px]"
+                        style={{tintColor: '#1F3CFE'}}
+                        source={allImages.Delete}
+                      />
+                    </TouchableOpacity>
 
-                      <View>
-                        <Text className="text-primaryHeading font-semibold ">
-                          Amount &#8377; {item.amount}, Interest Rate{' '}
-                          {item.interestRate}%
-                        </Text>
+                    {/* amount, interestRate, years, months, days, maturityAmount */}
 
-                        <Text className="text-primaryHeading font-semibold ">
-                          Time Period Years{item.years}, Months {item.months},
-                          Days {item.days}
-                        </Text>
-                        <Text className="text-primaryDark font-semibold">
-                          Est. Returns &#8377; {item.maturityAmount - item.amount}
-                        </Text>
-                        <Text className="text-primaryDark font-semibold">
-                          Maturity Amount &#8377; {item.maturityAmount}
-                        </Text>
-                      </View>
+                    <View>
+                      <Text className="text-primaryHeading font-semibold ">
+                        Amount &#8377; {item.amount}, Interest Rate{' '}
+                        {item.interestRate}%
+                      </Text>
+
+                      <Text className="text-primaryHeading font-semibold ">
+                        Time Period Years{item.years}, Months {item.months},
+                        Days {item.days}
+                      </Text>
+                      <Text className="text-primaryDark font-semibold">
+                        Est. Returns &#8377; {item.maturityAmount - item.amount}
+                      </Text>
+                      <Text className="text-primaryDark font-semibold">
+                        Maturity Amount &#8377; {item.maturityAmount}
+                      </Text>
                     </View>
-                    <View></View>
                   </View>
+                  <View></View>
                 </View>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
-      ) : (
-        <View className="flex-1 items-center justify-center">
-          <Text className="text-primaryDark  text-lg font-semibold">
-            No Record
-          </Text>
-        </View>
-      )}
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
     </View>
   );
 };

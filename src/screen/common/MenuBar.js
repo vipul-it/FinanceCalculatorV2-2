@@ -1,45 +1,61 @@
-import {View, Text, TouchableOpacity, Image, Linking, Share} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Linking,
+  Share,
+} from 'react-native';
 import React from 'react';
 import {allImages} from '../../utils/images';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const MenuBar = () => {
-    const navigation =useNavigation();
+  const navigation = useNavigation();
 
-    const rateHandle = () => {
-      const url = `https://play.google.com/store/apps/details?id=com.fin.emi.disccal`;
-    
-      // Open the link using Linking module
-      Linking.openURL(url)
-        .catch(() => alert('Link expire.'));
-    };
+  const rateHandle = () => {
+    const url = `https://play.google.com/store/apps/details?id=com.fin.emi.disccal`;
 
-    const shareHandle = async () => {
-      try {
-        const result = await Share.share({
-          message:
-            'Download Finance Calculator App https://play.google.com/store/apps/details?id=com.fin.emi.disccal',
-        });
-        if (result.action === Share.sharedAction) {
-          if (result.activityType) {
-            // shared with activity type of result.activityType
-          } else {
-            // shared
-          }
-        } else if (result.action === Share.dismissedAction) {
-          // dismissed
+    // Open the link using Linking module
+    Linking.openURL(url).catch(() => alert('Link not Working.'));
+  };
+
+  const shareHandle = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'Download Finance Calculator App https://play.google.com/store/apps/details?id=com.fin.emi.disccal',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
         }
-      } catch (error) {
-        Alert.alert(error.message);
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
       }
-    };
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
+
+  const privacyHandle = () => {
+    const url = `https://docs.google.com/document/d/1ZMAe4dLqPJJUCVGugfy3sptHQL-kX0PKWMgV7luZ01w/edit`;
+
+    // Open the link using Linking module
+    Linking.openURL(url).catch(() => alert('Link not Working.'));
+  };
+
   return (
     <View className="flex-1">
       <View className="h-40 w-full rounded-b-[70px] bg-primaryC px-5 py-4">
         <View className="flex-row justify-between">
-          <TouchableOpacity className="p-5" onPress={()=>{
-            navigation.goBack();
-          }}>
+          <TouchableOpacity
+            className="p-5"
+            onPress={() => {
+              navigation.goBack();
+            }}>
             <Image
               className="w-[14px] h-[16px]"
               source={allImages.BackLeftArrow}
@@ -61,33 +77,43 @@ const MenuBar = () => {
       </View>
       <Text className="mt-2"></Text>
 
-      <TouchableOpacity className="flex-row items-center px-5 h-16 border-b-[0.5px] border-Cgray50"
-       onPress={()=>{
-        navigation.navigate('Dashboard');
-      }}>
+      <TouchableOpacity
+        className="flex-row items-center px-8 h-16 border-b-[0.5px] border-Cgray50"
+        onPress={() => {
+          navigation.navigate('Dashboard');
+        }}>
         <Image
-          className="w-[26px] h-[26px] mr-3"
+          className="w-[26px] h-[24px] mr-3"
           source={allImages.MenuPageHome}
         />
         <Text className=" text-primaryHeading text-[18px]  text-center">
           Dashboard
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={rateHandle} className="flex-row items-center px-5 h-16 border-b-[0.5px] border-Cgray50">
-        <Image className="w-[26px] h-[26px] mr-3" source={allImages.Rate} />
+      <TouchableOpacity
+        onPress={rateHandle}
+        className="flex-row items-center px-8 h-16 border-b-[0.5px] border-Cgray50">
+        <Image className="w-[22px] h-[22px] mr-3" source={allImages.Rate} />
         <Text className=" text-primaryHeading text-[18px]  text-center">
           Rate App
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={shareHandle} className="flex-row  items-center px-5 h-16 border-b-[0.5px] border-Cgray50">
-        <Image className="w-[26px] h-[26px] mr-3" source={allImages.ShareFill} />
+      <TouchableOpacity
+        onPress={shareHandle}
+        className="flex-row  items-center px-8 h-16 border-b-[0.5px] border-Cgray50">
+        <Image
+          className="w-[21px] h-[22px] mr-3"
+          source={allImages.ShareFill}
+        />
         <Text className="text-primaryHeading text-[18px] text-center">
           Share App
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity className="flex-row items-center px-5 h-16 border-b-[0.5px] border-Cgray50">
-        <Image className="w-[26px] h-[26px] mr-3" source={allImages.Privacy} />
+      <TouchableOpacity
+        onPress={privacyHandle}
+        className="flex-row items-center px-8 h-16 border-b-[0.5px] border-Cgray50">
+        <Image className="w-[22px] h-[22px] mr-3" source={allImages.Privacy} />
         <Text className=" text-primaryHeading text-[18px]  text-center">
           Privacy
         </Text>

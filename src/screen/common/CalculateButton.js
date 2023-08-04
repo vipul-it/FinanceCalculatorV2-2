@@ -13,16 +13,16 @@ const CalculateButton = ({name, srcPath, onPress}) => {
             alignItems: 'center',
             borderRadius: 10,
             paddingVertical: 6,
-            justifyContent: 'center'
+            justifyContent: 'center',
           }}>
           <Image
             source={srcPath}
             style={{
               tintColor: '#fff',
-              width: 10,
+              width: 14,
               height: 14,
               marginRight: 5,
-              
+              resizeMode: 'contain',
             }}
           />
           <Text style={{color: '#fff', fontSize: 15}}>{name}</Text>

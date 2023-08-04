@@ -61,14 +61,14 @@ const FdCalculator = () => {
       return;
     }
 
-    const principal = parseFloat(amount);
-    const rate = parseFloat(interestRate);
-    const timeInYears =
+    const p = parseFloat(amount);
+    const r = parseFloat(interestRate) / 100;
+    const n = 1;
+    const t =
       parseFloat(years) + parseFloat(months) / 12 + parseFloat(days) / 365;
-
-    const maturityAmount = principal * Math.pow(1 + rate / 100, timeInYears);
+    // const maturityAmount = principal * (Math.pow(1 + (rate / 100), timeInYears));
+    const maturityAmount = p * Math.pow(1 + r / n, n * t);
     setMaturityAmount(maturityAmount);
-
     insertData();
   };
 
