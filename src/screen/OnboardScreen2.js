@@ -10,7 +10,7 @@ const OnboardScreen2 = () => {
     <View className="flex-1 ">
       <StatusBar backgroundColor="#879DFF" />
       <View className="flex-row justify-between mx-5 my-7">
-        <TouchableOpacity
+        <TouchableOpacity 
           onPress={() => {
             navigation.navigate('OnboardScreen1');
           }}>
@@ -49,15 +49,15 @@ const OnboardScreen2 = () => {
         </View>
         <View className="flex-row justify-between	 relative">
           <Text></Text>
-          <TouchableOpacity
+          <View className="absolute top-28 right-5"><TouchableOpacity
             onPress={() => {
               navigation.navigate('OnboardScreen3');
             }}>
             <Image
-              className="absolute top-24 right-8 w-[120px] h-[45px]"
+              className=" w-[136px] h-[53px]"
               source={allImages.Next1}
             />
-          </TouchableOpacity>
+          </TouchableOpacity></View>
         </View>
       </View>
     </View>

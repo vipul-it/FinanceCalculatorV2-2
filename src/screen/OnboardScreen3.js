@@ -31,8 +31,8 @@ const OnboardScreen3 = () => {
       </View>
 
       <View className=" flex h-[100%] w-full  rounded-t-[70px] bg-primaryC py-3 ">
-        <View className="flex-row justify-center mt-28">
-          <Image className="w-[57px] h-[8px] " source={allImages.Slider3} />
+        <View className="flex-row justify-center mt-28 ">
+          <Image className="w-[58px] h-[8px]" source={allImages.Slider3} />
         </View>
         <View className="flex-row justify-center mt-8">
           <Text className="text-whiteC font-[300] text-[28px] tracking-wider">
@@ -52,15 +52,16 @@ const OnboardScreen3 = () => {
         </View>
         <View className="flex-row justify-between	relative">
           <Text></Text>
-          <TouchableOpacity
+          <View className="absolute top-28 right-5"><TouchableOpacity
             onPress={() => {
               navigation.navigate('Dashboard');
             }}>
             <Image
-              className="absolute top-24 right-8 w-[120px] h-[45px]"
+              className=" w-[136px] h-[53px]"
               source={allImages.Next3}
             />
           </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>

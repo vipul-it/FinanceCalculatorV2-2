@@ -44,8 +44,8 @@ const Dashboard = () => {
     <SafeAreaView className="">
       <StatusBar backgroundColor="#879DFF" />
       <View>
-        <View className="box-content  h-48 w-full rounded-b-[40px] bg-primaryC px-10 py-2 flex-row items-center -mt-12">
-          <TouchableOpacity>
+        <View className="box-content h-48 w-full rounded-b-[40px] bg-primaryC px-10 py-2 flex-row items-center -mt-12">
+          
           <TouchableOpacity
               onPress={() => {
                 navigation.navigate('MenuBar');
@@ -54,7 +54,7 @@ const Dashboard = () => {
               source={allImages.Menu}
               alt="menu"
             /></TouchableOpacity>
-          </TouchableOpacity>
+          
           <Text className="text-whiteC text-center text-2xl font-bold">
             Finance Calculator
           </Text>
@@ -106,8 +106,8 @@ const Dashboard = () => {
           </View>
         </View>
 
-        <View className="mx-5 pl-5">
-          <Text className=" my-4 text-primaryHeading text-2xl font-bold">
+        <View className="mx-5 pb-1 my-5 pl-5">
+          <Text className=" text-primaryHeading text-2xl font-bold">
             Value of Your money
           </Text>
         </View>
@@ -135,8 +135,8 @@ const Dashboard = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View className="mx-5  items-center">
-          <View className="flex-row  ">
+        <View className="mx-5 flex-row items-center justify-between">
+          
             <TouchableOpacity
               onPress={() => {
                 handleOpenGoogleMapsBank()
@@ -157,7 +157,7 @@ const Dashboard = () => {
                 alt="card"
               />
             </TouchableOpacity>
-          </View>
+          
         </View>
       </View>
     </SafeAreaView>

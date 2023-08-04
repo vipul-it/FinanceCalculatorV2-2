@@ -44,15 +44,15 @@ const OnboardScreen1 = () => {
         </View>
         <View className="flex-row justify-between relative">
           <Text></Text>
-          <TouchableOpacity
+          <View className="absolute top-28 -mt-1 right-5"><TouchableOpacity
             onPress={() => {
               navigation.navigate('OnboardScreen2');
             }}>
             <Image
-              className="absolute top-24 -mt-1 right-8 w-[120px] h-[45px]"
+              className=" w-[136px] h-[53px]"
               source={allImages.Next1}
             />
-          </TouchableOpacity>
+          </TouchableOpacity></View>
         </View>
       </View>
     </View>
