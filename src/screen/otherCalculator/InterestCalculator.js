@@ -316,48 +316,44 @@ console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
             name="Interest Calculator"
           />
         </View>
-        <View className="mt-[20px] flex justify-center items-center">
-          <FlatList
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            data={dummyData}
-            renderItem={({item, index}) => {
-              return (
-                <View>
-                  <TouchableOpacity
-                    style={{
-                      borderWidth: 1,
-                      borderColor:
-                        selectedcolor == item.id ? '#CBCBCB' : '#BDBDBD',
-                      width: 85,
-                      height: 35,
-                      alignSelf: 'center',
-                      justifyContent: 'center',
-                      borderRadius: 5,
-
-                      backgroundColor:
-                        selectedcolor == item.id ? '#1F3CFE' : '#fff',
-                    }}
-                    onPress={() => {
-                      setSelected(item.id);
-                    }}>
-                    <Text
+        <View className="flex-row mt-[20px] mb-3">
+          <View className=" m-auto py-[3px] px-[3px] bg-[#DFDFDF] rounded-md ">
+            <FlatList
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              data={dummyData}
+              renderItem={({item, index}) => {
+                return (
+                  <View className=" flex-row justify-center items-center ">
+                    <TouchableOpacity
+                      className="duration-700"
                       style={{
-                        color: selectedcolor == item.id ? '#fff' : '#CBCBCB',
-                        fontSize: 13,
-                        fontWeight: 500,
+                        width: 92,
+                        height: 35,
+                        paddingVertical: 2,
                         alignSelf: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 6,
+                        backgroundColor:
+                          selectedcolor == item.id ? '#FFF' : '#DFDFDF',
+                      }}
+                      onPress={() => {
+                        setSelected(item.id);
                       }}>
-                      {item.title}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-          />
-
-          <View className="mt-0.5">
-            <Text></Text>
+                      <Text
+                        style={{
+                          color: selectedcolor == item.id ? '#000' : '#000',
+                          fontSize: 13,
+                          fontWeight: 500,
+                          alignSelf: 'center',
+                        }}>
+                        {item.title}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }}
+            />
           </View>
         </View>
         <ScrollView>
