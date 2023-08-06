@@ -9,7 +9,7 @@ const SplashScreen = () => {
     setTimeout(() => {
       completeOnboarding();
       checkOnboardingStatus();
-      console.log("setTimeout");
+      // console.log("setTimeout");
     }, 2000);
   }, []);
 
@@ -17,7 +17,7 @@ const SplashScreen = () => {
     // Set the onboarding flag to true in AsyncStorage
     try {
       await AsyncStorage.setItem('@onboarding_complete', 'true');
-      console.log("Async true");
+      // console.log("Async true");
       [];
     } catch (error) {
       // Handle AsyncStorage error
@@ -25,28 +25,23 @@ const SplashScreen = () => {
     }
   };
 
-
-    // Check if onboarding flag is set, if so, skip onboarding and navigate to MainApp
-    const checkOnboardingStatus = async () => {
-      try {
-        const onboardingStatus = await AsyncStorage.getItem(
-          '@onboarding_complete',
-          
-        );
-        if (onboardingStatus === 'false') {
-          console.log("async check onboarding status");
-          navigation.navigate('Dashboard'); // Replace 'MainApp' with your main app screen name
-        } else {
-          navigation.navigate('OnboardScreen1'); // Replace 'Onboarding' app screen
-        }
-      } catch (error) {
-        // Handle AsyncStorage error
-        console.log('Error getting onboarding status: ', error);
+  // Check if onboarding flag is set, if so, skip onboarding and navigate to MainApp
+  const checkOnboardingStatus = async () => {
+    try {
+      const onboardingStatus = await AsyncStorage.getItem(
+        '@onboarding_complete',
+      );
+      if (onboardingStatus === 'true') {
+        // console.log("async check onboarding status");
+        navigation.navigate('Dashboard'); // Replace 'MainApp' with your main app screen name
+      } else {
+        navigation.navigate('OnboardScreen1'); // Replace 'Onboarding' app screen
       }
-    };
-
-   
-
+    } catch (error) {
+      // Handle AsyncStorage error
+      console.log('Error getting onboarding status: ', error);
+    }
+  };
 
   return (
     <View className="flex-1">
