@@ -111,17 +111,17 @@ const InterestCalculator = () => {
   const resetDataPeriod = () => {
     setAmount('');
     setInterest('');
-    setCompoundInterval('');
+    setCompoundInterval('1');
     setPrincipleAmount('');
-    setYears('');
-    setMonths('');
+    setYears('1');
+    setMonths('0');
     setTotalInterest('');
     setTotalAmount('');
   };
   const resetDataDate = () => {
     setDAmount('');
     setDInterest('');
-    setDCompoundInterval('');
+    setDCompoundInterval('1');
     setDPrincipleAmount('');
     setDTotalInterest('');
     setDTotalAmount('');

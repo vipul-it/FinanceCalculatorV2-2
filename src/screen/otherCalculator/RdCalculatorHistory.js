@@ -25,7 +25,7 @@ const RdCalculatorHistory = () => {
   const deleteRecord = id => {
     db.transaction(tx => {
       tx.executeSql(
-        'DELETE FROM RdCalculatorHistory WHERE id = ?',
+        'DELETE FROM RdCalculatorHistory2 WHERE id = ?',
         [id],
         (_, result) => {
           if (result.rowsAffected > 0) {
@@ -59,7 +59,7 @@ const RdCalculatorHistory = () => {
 
   const deleteAllRecords = () => {
     db.transaction(tx => {
-      tx.executeSql('DELETE FROM RdCalculatorHistory', [], (_, result) => {
+      tx.executeSql('DELETE FROM RdCalculatorHistory2', [], (_, result) => {
         if (result.rowsAffected > 0) {
           // Alert.alert('Success', 'All records deleted successfully!');
           fetchData();
@@ -72,7 +72,7 @@ const RdCalculatorHistory = () => {
 
   const fetchData = () => {
     db.transaction(tx => {
-      tx.executeSql('SELECT * FROM RdCalculatorHistory', [], (_, {rows}) => {
+      tx.executeSql('SELECT * FROM RdCalculatorHistory2', [], (_, {rows}) => {
         const len = rows.length;
         const tempData = [];
 

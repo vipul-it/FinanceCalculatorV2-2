@@ -23,7 +23,7 @@ const RdCalculator = () => {
     // Create the table if it doesn't exist
     db.transaction(tx => {
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS RdCalculatorHistory (id INTEGER PRIMARY KEY AUTOINCREMENT,  monthlyAmount REAL, interest REAL, timePeriod REAL, maturityAmount REAL, totalInterest REAL, totalInvestment REAL)',
+        'CREATE TABLE IF NOT EXISTS RdCalculatorHistory2 (id INTEGER PRIMARY KEY AUTOINCREMENT,  monthlyAmount REAL, interest REAL, years REAL, months REAL, maturityAmount REAL, totalInterest REAL, totalInvestment REAL)',
         [],
       );
     });
@@ -32,19 +32,20 @@ const RdCalculator = () => {
 
   const [monthlyAmount, setMonthlyAmount] = useState('');
   const [interest, setInterest] = useState('');
-  const [timePeriod, setTimePeriod] = useState('');
+  const [years, setYears] = useState('1');
+  const [months, setMonths] = useState('0');
   const [maturityAmount, setMaturityAmount] = useState('');
   const [totalInterest, setTotalInterest] = useState('');
   const [totalInvestment, setTotalInvestment] = useState('');
 
-  // monthlyAmount, interest, timePeriod, maturityAmount, totalInterest, totalInvestment
+  // monthlyAmount, interest, years, months maturityAmount, totalInterest, totalInvestment
 
   //   Reset data
   const resetData = () => {
     setMonthlyAmount('');
     setInterest('');
-    setTimePeriod('');
-    setTimePeriod('');
+    setYears('1');
+    setMonths('0');
     setMaturityAmount('');
     setTotalInterest('');
     setTotalInvestment('');
@@ -55,25 +56,39 @@ const RdCalculator = () => {
     calculateRD();
   };
   const calculateRD = () => {
-    const principal = parseFloat(monthlyAmount) * parseFloat(timePeriod);
-    const rate = parseFloat(interest) / 100 / 12;
-    const maturityAmount = principal * (1 + rate) * timePeriod + principal;
-    const totalInterest = maturityAmount - principal;
-    const totalInvestment = parseFloat(monthlyAmount) * parseFloat(timePeriod);
-    setMaturityAmount(maturityAmount.toFixed(2));
-    setTotalInterest(totalInterest.toFixed(2));
-    setTotalInvestment(totalInvestment.toFixed(2));
+    const P = parseFloat(monthlyAmount);
+    const i = parseFloat(interest) / 400;
+    const n = parseFloat(years) * 4 + parseFloat(months);
+    const t = parseFloat(years) + parseFloat(months) / 12;
+    const N = 12;
+
+    const M = (P * (Math.pow(1 + i, n) - 1)) / (1 - Math.pow(1 + i, -1 / 3));
+    const A = P * Math.pow(1 + (i * 400) / N, N * t);
+    const totalInv = P * 12 * t;
+    const totalInt = M - totalInv;
+
+    setMaturityAmount(M.toLocaleString(undefined, {
+      maximumFractionDigits: 0,
+    }),);
+    setTotalInterest(totalInt.toLocaleString(undefined, {
+      maximumFractionDigits: 0,
+    }),);
+    setTotalInvestment(totalInv.toLocaleString(undefined, {
+      maximumFractionDigits: 0,
+    }),);
+
     insertData();
   };
 
   const insertData = () => {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO RdCalculatorHistory (monthlyAmount, interest, timePeriod, maturityAmount, totalInterest, totalInvestment) VALUES (?, ?, ?, ? , ?, ?)',
+        'INSERT INTO RdCalculatorHistory2 (monthlyAmount, interest, years, months, maturityAmount, totalInterest, totalInvestment) VALUES (?, ?, ?, ? , ?, ?, ?)',
         [
           monthlyAmount,
           interest,
-          timePeriod,
+          years,
+          months,
           maturityAmount,
           totalInterest,
           totalInvestment,
@@ -102,7 +117,7 @@ const RdCalculator = () => {
       />
       <ScrollView>
         <View className="mx-5 mt-2">
-          <SubHeading name="Amount" />
+          <SubHeading name="Monthly Amount" />
           <KeyboardAwareScrollView>
             <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
               <TextInput
@@ -111,6 +126,7 @@ const RdCalculator = () => {
                 onChangeText={setMonthlyAmount}
                 placeholder="eg. 100000"
                 keyboardType="numeric"
+                autoComplete='off'
               />
               <Text className="text-blackC">&#8377;</Text>
             </View>
@@ -123,6 +139,7 @@ const RdCalculator = () => {
               onChangeText={setInterest}
               placeholder="eg. 8"
               keyboardType="numeric"
+              autoComplete='off'
             />
             <Text className="text-blackC">&#37;</Text>
           </View>
@@ -130,23 +147,25 @@ const RdCalculator = () => {
           <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
             <TextInput
               className="w-[25%] text-blackC"
-              value={timePeriod}
-              onChangeText={setTimePeriod}
+              value={years}
+              onChangeText={setYears}
               placeholder="e.g. 5"
               keyboardType="numeric"
+              autoComplete='off'
             />
-            <Text className="text-blackC">No. of Months</Text>
+            <Text className="text-blackC">Years</Text>
           </View>
-          {/* <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
+          <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
             <TextInput
               className="w-[25%] text-blackC"
               value={months}
               onChangeText={setMonths}
-              placeholder="Months"
+              placeholder="e.g. 5"
               keyboardType="numeric"
+              autoComplete='off'
             />
             <Text className="text-blackC">Months</Text>
-          </View> */}
+          </View>
 
           <View className="flex-row justify-evenly my-12">
             <CalculateButton
@@ -176,9 +195,9 @@ const RdCalculator = () => {
           />
 
           <View className="flex-row justify-between mx-10 items-center">
-            <Text className="text-whiteC pt-2 text-lg ">Maturity Amount</Text>
+            <Text className="text-whiteC pt-2 text-lg ">Invested Amount</Text>
             <Text className="text-primaryHeading text-lg ">
-              &#8377; {maturityAmount}
+              &#8377; {totalInvestment}
             </Text>
           </View>
           <View className="flex-row justify-between mx-10 items-center">
@@ -188,9 +207,9 @@ const RdCalculator = () => {
             </Text>
           </View>
           <View className="flex-row justify-between mx-10 items-center">
-            <Text className="text-whiteC pt-2 text-lg ">Total Investment</Text>
+            <Text className="text-whiteC pt-2 text-lg ">Maturity Amount</Text>
             <Text className="text-primaryHeading text-lg ">
-              &#8377; {totalInvestment}
+              &#8377; {maturityAmount}
             </Text>
           </View>
         </View>
