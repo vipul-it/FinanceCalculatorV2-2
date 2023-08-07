@@ -158,6 +158,7 @@ const Dashboard = () => {
               />
             </TouchableOpacity>
             <TouchableOpacity
+            
               onPress={() => {
                 handleOpenGoogleMapsATM();
               }}>
