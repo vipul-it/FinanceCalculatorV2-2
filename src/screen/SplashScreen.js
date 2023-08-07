@@ -7,39 +7,24 @@ const SplashScreen = () => {
   const navigation = useNavigation();
   useEffect(() => {
     setTimeout(() => {
-      completeOnboarding();
       checkOnboardingStatus();
-      // console.log("setTimeout");
     }, 2000);
   }, []);
 
-  const completeOnboarding = async () => {
-    // Set the onboarding flag to true in AsyncStorage
-    try {
-      await AsyncStorage.setItem('@onboarding_complete', 'true');
-      // console.log("Async true");
-      [];
-    } catch (error) {
-      // Handle AsyncStorage error
-      console.log('Error saving onboarding status: ', error);
-    }
-  };
-
-  // Check if onboarding flag is set, if so, skip onboarding and navigate to MainApp
   const checkOnboardingStatus = async () => {
     try {
-      const onboardingStatus = await AsyncStorage.getItem(
-        '@onboarding_complete',
-      );
-      if (onboardingStatus === 'true') {
-        // console.log("async check onboarding status");
-        navigation.navigate('Dashboard'); // Replace 'MainApp' with your main app screen name
+      const value = await AsyncStorage.getItem('@onboarding_done');
+      if (value === 'true') {
+        // User has seen onboarding before, navigate to dashboard
+        navigation.navigate('Dashboard');
       } else {
-        navigation.navigate('OnboardScreen1'); // Replace 'Onboarding' app screen
+        // User has not seen onboarding, continue showing onboarding
+        await AsyncStorage.setItem('@onboarding_done', 'true');
+        navigation.navigate('OnboardScreen1');
       }
     } catch (error) {
-      // Handle AsyncStorage error
-      console.log('Error getting onboarding status: ', error);
+      // Handle AsyncStorage read/write errors
+      console.error('AsyncStorage error:', error);
     }
   };
 

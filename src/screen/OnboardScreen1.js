@@ -1,10 +1,32 @@
 import {Image, StatusBar, Text, View, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React ,{useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {allImages} from '../utils/images';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const OnboardScreen1 = () => {
   const navigation = useNavigation();
+
+  // const checkOnboardingStatus = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('@onboarding_done');
+  //     if (value === 'true') {
+  //       // User has seen onboarding before, navigate to dashboard
+  //       navigation.navigate('Dashboard');
+  //     } else {
+  //       // User has not seen onboarding, continue showing onboarding
+  //       await AsyncStorage.setItem('@onboarding_done', 'true');
+  //     }
+  //   } catch (error) {
+  //     // Handle AsyncStorage read/write errors
+  //     console.error('AsyncStorage error:', error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   checkOnboardingStatus();
+  // }, []);
 
   return (
     <View className="flex-1 ">
