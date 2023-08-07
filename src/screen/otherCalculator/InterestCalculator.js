@@ -43,15 +43,15 @@ const InterestCalculator = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   // Create the table if it doesn't exist
-  //   db.transaction(tx => {
-  //     tx.executeSql(
-  //       'CREATE TABLE IF NOT EXISTS InterestCalculatorHistoryDate (id INTEGER PRIMARY KEY AUTOINCREMENT,  damount REAL, dinterest REAL, dcompoundInterval REAL, dprincipleAmount REAL, selectedDateFrom DATE, selectedDateFrom DATE, dtotalInterest REAL, dtotalAmount REAL)',
-  //       [],
-  //     );
-  //   });
-  // }, []);
+  useEffect(() => {
+    // Create the table if it doesn't exist
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS InterestCalculatorHistoryDatewise (id INTEGER PRIMARY KEY AUTOINCREMENT,  damount REAL, dinterest REAL, dcompoundInterval REAL, dprincipleAmount REAL, dtotalInterest REAL, dtotalAmount REAL, dyears REAL, dmonths REAL, ddays REAL)',
+        [],
+      );
+    });
+  }, []);
 
   const navigation = useNavigation();
 
@@ -61,12 +61,8 @@ const InterestCalculator = () => {
   const [selectedDateFrom, setSelectedDateFrom] = useState(new Date());
   const [selectedDateTo, setSelectedDateTo] = useState(new Date());
 
-  const [fromDate, SetFromDate] =useState('');
-  const [toDate, SetToDate] =useState('');
-
-  
-
   // Format Date From
+
   const formatSelectedDateFrom = () => {
     const options = {year: 'numeric', month: '2-digit', day: '2-digit'};
     return selectedDateFrom
@@ -80,11 +76,6 @@ const InterestCalculator = () => {
       .toLocaleDateString(undefined, options)
       .replace(/\//g, '-');
   };
-
-  
-
-  console.log("aas",formatSelectedDateFrom(selectedDateFrom));
-  console.log("===",new Date());
 
   const [amount, setAmount] = useState('');
   const [interest, setInterest] = useState('');
@@ -101,8 +92,12 @@ const InterestCalculator = () => {
   const [dprincipleAmount, setDPrincipleAmount] = useState('');
   const [dtotalInterest, setDTotalInterest] = useState('');
   const [dtotalAmount, setDTotalAmount] = useState('');
+  const [dyears, setDYears] = useState('');
+  const [dmonths, setDMonths] = useState('');
+  const [ddays, setDDays] = useState('');
 
-  // amount, interest, compoundInterval, principleAmount, years, months, totalInterest, totalAmount, damount, dinterest, dcompoundInterval, dprincipleAmount, dtotalInterest, dtotalAmount
+  // amount, interest, compoundInterval, principleAmount, years, months, totalInterest, totalAmount
+  //  damount, dinterest, dcompoundInterval, dprincipleAmount, dtotalInterest, dtotalAmount, dyears, dmonths, ddays,
 
   const [value, setValue] = useState(1);
   const renderItem = item => {
@@ -146,35 +141,9 @@ const InterestCalculator = () => {
   ];
 
   const calculateInterestPeriod = () => {
-
-
-
-// Function to calculate the difference between two dates
-const getDateDifference = (toDate, fromDate) => {
-  // Parse the dates using moment
-  const toDateMoment = moment(toDate, 'MM-DD-YYYY');
-  const fromDateMoment = moment(fromDate, 'MM-DD-YYYY');
-
-  // Calculate the difference in years, months, and days
-  const years = toDateMoment.diff(fromDateMoment, 'years');
-  fromDateMoment.add(years, 'years');
-  const months = toDateMoment.diff(fromDateMoment, 'months');
-  fromDateMoment.add(months, 'months');
-  const days = toDateMoment.diff(fromDateMoment, 'days');
-
-  return { years, months, days };
-};
-
-// Example usage
-// const toDate = '08-04-2024';
-// const fromDate = '08-04-2023';
-const { years, months, days } = getDateDifference(toDate, fromDate);
-
-console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
-
+    // Function to calculate the difference between two dates
 
     const P = parseFloat(amount);
-    const DPamount = parseFloat(amount);
     const r = parseFloat(interest) / 100;
     const n = parseInt(compoundInterval);
     const t = parseFloat(years) + parseFloat(months) / 12;
@@ -185,7 +154,7 @@ console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
     const compoundInterest = A - P;
 
     setPrincipleAmount(
-      DPamount.toLocaleString(undefined, {
+      P.toLocaleString(undefined, {
         maximumFractionDigits: 0,
       }),
     );
@@ -204,19 +173,34 @@ console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
 
   // Date wise calculation
   const calculateInterestDate = () => {
+    // Calculate the difference in milliseconds
+    const diffInMillis = selectedDateTo - selectedDateFrom;
+
+    // Convert milliseconds to days
+    const diffInDays = diffInMillis / (1000 * 60 * 60 * 24);
+
+    // Calculate the years, months, and remaining days
+    let dyears = Math.floor(diffInDays / 365);
+    let dmonths = Math.floor((diffInDays % 365) / 30);
+    let ddays = Math.floor((diffInDays % 365) % 30);
+    // console.log('date', dyears, dmonths, ddays);
+    setDYears(dyears);
+    setDMonths(dmonths);
+    setDDays(ddays);
+
     const P = parseFloat(damount);
-    const Pamount = parseFloat(damount);
     const r = parseFloat(dinterest) / 100;
     const n = parseInt(dcompoundInterval);
-    const t = parseFloat(years) + parseFloat(months) / 12;
+    const t =
+      parseFloat(dyears) + parseFloat(dmonths) / 12 + parseFloat(ddays) / 30.44;
     console.log(P, r, n, t);
-    console.log(amount.toLocaleString());
+    console.log(P.toLocaleString());
 
     const A = P * Math.pow(1 + r / n, n * t);
     const compoundInterest = A - P;
 
     setDPrincipleAmount(
-      Pamount.toLocaleString(undefined, {
+      P.toLocaleString(undefined, {
         maximumFractionDigits: 0,
       }),
     );
@@ -248,7 +232,7 @@ console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
       Alert.alert('Validation Error', 'Please enter empty fields.');
       return;
     }
-    if (!selectedDateFrom == !selectedDateTo) {
+    if (selectedDateFrom.getTime() === selectedDateTo.getTime()) {
       Alert.alert(
         'Validation Error',
         'From Date, To Date are Same. Please Change it.',
@@ -284,24 +268,32 @@ console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
     });
   };
 
-  // const insertDataDate = () => {
-  //   db.transaction(tx => {
-  //     tx.executeSql(
-  //       'INSERT INTO InterestCalculatorHistoryDate (damount, dinterest, dcompoundInterval, dprincipleAmount, selectedDateFrom, selectedDateTo, dtotalInterest, dtotalAmount) VALUES (?, ?, ?, ? , ?, ?, ?, ?)',
-  //       [
-  //         damount, dinterest, dcompoundInterval, dprincipleAmount, selectedDateFrom, selectedDateTo, dtotalInterest, dtotalAmount
-  //       ],
-  //       // (_, result) => {
-  //       //   if (result.insertId !== undefined) {
-  //       //     Alert.alert('Success', 'Data inserted successfully!');
-  //       //     fetchData();
-  //       //   } else {
-  //       //     Alert.alert('Error', 'Failed to insert data!');
-  //       //   }
-  //       // },
-  //     );
-  //   });
-  // };
+  const insertDataDate = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO InterestCalculatorHistoryDatewise (damount, dinterest, dcompoundInterval, dprincipleAmount, dtotalInterest, dtotalAmount, dyears, dmonths, ddays) VALUES (?, ?, ?, ? , ?, ?, ?, ?, ?)',
+        [
+          damount,
+          dinterest,
+          dcompoundInterval,
+          dprincipleAmount,
+          dtotalInterest,
+          dtotalAmount,
+          dyears,
+          dmonths,
+          ddays,
+        ],
+        // (_, result) => {
+        //   if (result.insertId !== undefined) {
+        //     Alert.alert('Success', 'Data inserted successfully!');
+        //     fetchData();
+        //   } else {
+        //     Alert.alert('Error', 'Failed to insert data!');
+        //   }
+        // },
+      );
+    });
+  };
 
   const [selectedcolor, setSelected] = useState(1);
 
@@ -502,7 +494,7 @@ console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
                     <Text className="text-blackC">&#8377;</Text>
                   </View>
                 </KeyboardAwareScrollView>
-                <SubHeading name="Intrest Rate" />
+                <SubHeading name="Interest Rate" />
                 <View className=" my-2 border-[1.5px] border-inputBorderColor rounded-lg flex-row items-center justify-between px-5">
                   <TextInput
                     className="w-full text-blackC"
@@ -535,7 +527,7 @@ console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
                   date={selectedDateFrom}
                   onConfirm={selectedDateFrom => {
                     setOpenFromDate(false);
-                    setSelectedDateFrom(formatSelectedDateFrom(selectedDateFrom));
+                    setSelectedDateFrom(selectedDateFrom);
                   }}
                   onCancel={() => {
                     setOpenFromDate(false);
@@ -563,8 +555,9 @@ console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
                       placeholder="DD-MM-YYYY"
                       keyboardType="numeric"
                     />
-                    <View className="p-3">
+                    <View>
                       <TouchableOpacity
+                        className="p-3"
                         title="Open"
                         onPress={() => setOpenFromDate(true)}>
                         <Image
@@ -585,8 +578,9 @@ console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
                       placeholder="DD-MM-YYYY"
                       keyboardType="numeric"
                     />
-                    <View className="p-3">
+                    <View>
                       <TouchableOpacity
+                        className="p-3"
                         title="Open"
                         onPress={() => setOpenToDate(true)}>
                         <Image
@@ -611,7 +605,7 @@ console.log(`Years: ${years}, Months: ${months}, Days: ${days}`);
                   <CalculateButton
                     name="History"
                     onPress={() => {
-                      navigation.navigate('InterestCalculatorHistoryPeriod');
+                      navigation.navigate('InterestCalculatorHistoryDate');
                     }}
                     srcPath={allImages.History}
                   />
