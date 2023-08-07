@@ -20,7 +20,7 @@ const OnboardScreen2 = () => {
           onPress={() => {
             navigation.navigate('Dashboard');
           }}>
-          <Text className="text-[#7F45FF] text-lg font-bold">Skip</Text>
+          <Text className="text-[#2740E6] text-lg font-bold">Skip</Text>
         </TouchableOpacity>
       </View>
       <View className="z-10 flex items-center">

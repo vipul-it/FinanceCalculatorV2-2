@@ -8,7 +8,7 @@ const SplashScreen = () => {
   useEffect(() => {
     setTimeout(() => {
       checkOnboardingStatus();
-    }, 2000);
+    }, 1500);
   }, []);
 
   const checkOnboardingStatus = async () => {
