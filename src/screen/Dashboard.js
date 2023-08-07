@@ -13,29 +13,37 @@ import {useNavigation} from '@react-navigation/native';
 
 const handleOpenGoogleMapsATM = () => {
   // Replace "Custom Search Query" with your desired custom search query
-  const searchQuery = "Find near by me ATM";
+  const searchQuery = 'Find near by me ATM';
 
   // Use the following deep link to open Google Maps with the custom search
-  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
+  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    searchQuery,
+  )}`;
 
   // Open the link using Linking module
-  Linking.openURL(url)
-    .catch(() => alert('Unable to open Google Maps. Please make sure the Google Maps app is installed.'));
+  Linking.openURL(url).catch(() =>
+    alert(
+      'Unable to open Google Maps. Please make sure the Google Maps app is installed.',
+    ),
+  );
 };
 
 const handleOpenGoogleMapsBank = () => {
   // Replace "Custom Search Query" with your desired custom search query
-  const searchQuery = "Find near by me Bank";
+  const searchQuery = 'Find near by me Bank';
 
   // Use the following deep link to open Google Maps with the custom search
-  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchQuery)}`;
+  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    searchQuery,
+  )}`;
 
   // Open the link using Linking module
-  Linking.openURL(url)
-    .catch(() => alert('Unable to open Google Maps. Please make sure the Google Maps app is installed.'));
+  Linking.openURL(url).catch(() =>
+    alert(
+      'Unable to open Google Maps. Please make sure the Google Maps app is installed.',
+    ),
+  );
 };
-
-
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -44,20 +52,22 @@ const Dashboard = () => {
     <SafeAreaView className="">
       <StatusBar backgroundColor="#879DFF" />
       <View>
-        <View className="box-content h-48 w-full rounded-b-[40px] bg-primaryC px-10 py-2 flex-row items-center -mt-12">
-          
+        <View className="box-content h-48 w-full rounded-b-[40px] bg-primaryC px-12 py-2 flex-row items-center justify-between -mt-12">
           <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('MenuBar');
-              }}><Image
-              className="w-[25px] h-[14px] mr-4"
+            onPress={() => {
+              navigation.navigate('MenuBar');
+            }}>
+            <Image
+              className="w-[25px] h-[14px]"
               source={allImages.Menu}
               alt="menu"
-            /></TouchableOpacity>
-          
+            />
+          </TouchableOpacity>
+
           <Text className="text-whiteC text-center text-2xl font-bold">
             Finance Calculator
           </Text>
+          <Text>{}</Text>
         </View>
         <View className="mx-5  items-center">
           <View className="flex-row -mt-12 ">
@@ -66,7 +76,7 @@ const Dashboard = () => {
                 navigation.navigate('Emicalculator');
               }}>
               <Image
-                className="w-[160px] h-[140px]"
+                className="w-[150px] h-[134px]"
                 source={allImages.BankAccountCard1}
                 alt="card"
               />
@@ -76,7 +86,7 @@ const Dashboard = () => {
                 navigation.navigate('OtherCalculator');
               }}>
               <Image
-                className="w-[160px] h-[140px]"
+                className="w-[150px] h-[134px]"
                 source={allImages.BankAccountCard2}
                 alt="card"
               />
@@ -88,7 +98,7 @@ const Dashboard = () => {
                 navigation.navigate('PrePayments');
               }}>
               <Image
-                className="w-[160px] h-[140px]"
+                className="w-[150px] h-[134px]"
                 source={allImages.BankAccountCard3}
                 alt="card"
               />
@@ -98,7 +108,7 @@ const Dashboard = () => {
                 navigation.navigate('History');
               }}>
               <Image
-                className="w-[160px] h-[140px]"
+                className="w-[150px] h-[134px]"
                 source={allImages.BankAccountCard4}
                 alt="card"
               />
@@ -118,7 +128,7 @@ const Dashboard = () => {
                 navigation.navigate('CompareLoan');
               }}>
               <Image
-                className="w-[160px] h-[140px]"
+                className="w-[150px] h-[134px]"
                 source={allImages.CompareLoan}
                 alt="card"
               />
@@ -128,36 +138,36 @@ const Dashboard = () => {
                 navigation.navigate('ChangeCurrency');
               }}>
               <Image
-                className="w-[160px] h-[140px]"
+                className="w-[150px] h-[134px]"
                 source={allImages.ChangeCurrency}
                 alt="card"
               />
             </TouchableOpacity>
           </View>
         </View>
-        <View className="mx-5 flex-row items-center justify-between">
-          
+        <View className="mx-5 items-center ">
+          <View className="flex-row">
             <TouchableOpacity
               onPress={() => {
-                handleOpenGoogleMapsBank()
+                handleOpenGoogleMapsBank();
               }}>
               <Image
-                className="w-[160px] h-[140px]"
+                className="w-[150px] h-[134px]"
                 source={allImages.FindBank}
                 alt="card"
               />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                handleOpenGoogleMapsATM()
+                handleOpenGoogleMapsATM();
               }}>
               <Image
-                className="w-[160px] h-[140px]"
+                className="w-[150px] h-[134px]"
                 source={allImages.FindAtm}
                 alt="card"
               />
             </TouchableOpacity>
-          
+          </View>
         </View>
       </View>
     </SafeAreaView>
