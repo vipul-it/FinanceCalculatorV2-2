@@ -1,11 +1,39 @@
 import {View, Text, FlatList, StyleSheet, Alert} from 'react-native';
-import React from 'react';
+import React, {useRef} from 'react';
 import CustomTopLayout from './common/CustomTopLayout';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import CalculateButton from './common/CalculateButton';
 import {allImages} from '../utils/images';
+import ViewShot from 'react-native-view-shot';
+import Share from 'react-native-share';
 
 const Detilsshowemi = () => {
+  const viewShotRef = useRef(null);
+
+  const captureScreenshot = async () => {
+    try {
+      const uri = await viewShotRef.current.capture();
+      shareScreenshot(uri);
+    } catch (error) {
+      console.error('Error capturing screenshot:', error);
+    }
+  };
+
+  const shareScreenshot = async uri => {
+    const shareOptions = {
+      title: 'Share EMI Deatils',
+      url: uri,
+      type: 'image/jpeg',
+      message:
+        'Calculated by: https://play.google.com/store/apps/details?id=com.fin.emi.disccal',
+    };
+
+    try {
+      await Share.open(shareOptions);
+    } catch (error) {
+      console.error('Error sharing screenshot:', error);
+    }
+  };
   const route = useRoute();
 
   const {montly, total, loan, monts, intrest, totalintrest} = route.params;
@@ -82,7 +110,7 @@ const Detilsshowemi = () => {
     </View>
   );
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-whiteC">
       <CustomTopLayout
         name="EMI Details"
         onPress={() => {
@@ -90,56 +118,62 @@ const Detilsshowemi = () => {
         }}
       />
 
-      <View className="mx-5 mt-8">
-        {/* <View className="self-end ">
-          <CalculateButton name="Share" srcPath={allImages.Share} />
-        </View> */}
+      <View className="self-end my-4 mx-9 mt-8">
+        <CalculateButton
+          name="Share"
+          onPress={captureScreenshot}
+          srcPath={allImages.Share}
+        />
+      </View>
+      <ViewShot
+        ref={viewShotRef}
+        options={{fileName: 'EMI-Details', format: 'jpg', quality: 0.9}}>
+        <View className="mx-5 bg-whiteC p-4 rounded-lg">
+          <View className="border-[1px] border-primaryHeading rounded-lg ">
+            {/* Table Header */}
+            <View className="flex-row bg-primaryDark justify-center px-2 py-2 rounded-t-lg ">
+              <View className="">
+                <Text className="text-whiteC font-semibold">Loan Details</Text>
+              </View>
+            </View>
 
-        <View className="border-[1px] border-primaryHeading rounded-lg ">
-          {/* Table Header */}
-          <View className="flex-row bg-primaryDark justify-center px-2 py-2 rounded-t-lg ">
-            <View className="">
-              <Text className="text-whiteC font-semibold">Loan Details</Text>
+            {/* Table Rows */}
+            <View className="flex-row justify-between  border-t-[1px]  border-primaryHeading ">
+              <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
+                <Text className="text-primaryHeading ">&#8377; {montly}</Text>
+                {/*  montly,total,loan,monts,intrest,totalintrest */}
+                <Text className="text-gray-700">Monthly EMI</Text>
+              </View>
+              <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
+                <Text className="text-primaryHeading ">
+                  &#8377; {totalintrest}
+                </Text>
+                <Text className="text-gray-700">Total Interest</Text>
+              </View>
+              <View className=" justify-center items-center flex p-2">
+                <Text className="text-primaryHeading ">&#8377; {loan}</Text>
+                <Text className="text-gray-700">Loan Amount</Text>
+              </View>
+            </View>
+            <View className="flex-row justify-between  border-t-[1px]  border-primaryHeading ">
+              <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
+                <Text className="text-primaryHeading ">{monts}</Text>
+                <Text className="text-gray-700">Years</Text>
+              </View>
+              <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
+                <Text className="text-primaryHeading ">{intrest}</Text>
+                <Text className="text-gray-700">Interest Rate</Text>
+              </View>
+              <View className=" justify-center items-center flex p-2 ">
+                <Text className="text-primaryHeading ">&#8377; {total}</Text>
+                <Text className="text-gray-700">Total Payment</Text>
+              </View>
             </View>
           </View>
 
-          {/* Table Rows */}
-          <View className="flex-row justify-between  border-t-[1px]  border-primaryHeading ">
-            <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
-              <Text className="text-primaryHeading ">&#8377; {montly}</Text>
-              {/*  montly,total,loan,monts,intrest,totalintrest */}
-              <Text className="text-gray-700">Monthly EMI</Text>
-            </View>
-            <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
-              <Text className="text-primaryHeading ">
-                &#8377; {totalintrest}
-              </Text>
-              <Text className="text-gray-700">Total Interest</Text>
-            </View>
-            <View className=" justify-center items-center flex p-2">
-              <Text className="text-primaryHeading ">&#8377; {loan}</Text>
-              <Text className="text-gray-700">Loan Amount</Text>
-            </View>
-          </View>
-          <View className="flex-row justify-between  border-t-[1px]  border-primaryHeading ">
-            <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
-              <Text className="text-primaryHeading ">{monts}</Text>
-              <Text className="text-gray-700">Months</Text>
-            </View>
-            <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
-              <Text className="text-primaryHeading ">{intrest}</Text>
-              <Text className="text-gray-700">Interest Rate</Text>
-            </View>
-            <View className=" justify-center items-center flex p-2 ">
-              <Text className="text-primaryHeading ">&#8377; {total}</Text>
-              <Text className="text-gray-700">Total Payment</Text>
-            </View>
-          </View>
-        </View>
+          <Text className="my-2"></Text>
 
-        <Text className="my-2"></Text>
-
-        {/* <View className="border-[1px] border-primaryHeading rounded-lg ">
+          {/* <View className="border-[1px] border-primaryHeading rounded-lg ">
         
           <View className="flex-row bg-primaryDark justify-between px-2 py-2 rounded-t-lg ">
             <View className="">
@@ -163,7 +197,8 @@ const Detilsshowemi = () => {
             keyExtractor={item => item.id.toString()}
           />
         </View> */}
-      </View>
+        </View>
+      </ViewShot>
     </View>
   );
 };

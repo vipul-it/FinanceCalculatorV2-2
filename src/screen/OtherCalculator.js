@@ -20,9 +20,9 @@ const OtherCalculator = () => {
           onPress={() => {
             navigation.navigate('DiscountCalculator');
           }}>
-          <View className="my-1 ">
+          <View className="my-1 flex justify-center items-center">
             <Image
-              className=" w-[100%] h-[105px]"
+              className=" w-[315px] h-[105px]"
               source={allImages.Discount}
             />
           </View>
@@ -31,41 +31,41 @@ const OtherCalculator = () => {
           onPress={() => {
             navigation.navigate('FdCalculator');
           }}>
-          <View className="my-1">
-            <Image className=" w-[100%] h-[105px]" source={allImages.FD} />
+          <View className="my-1 flex justify-center items-center">
+            <Image className=" w-[315px] h-[105px]" source={allImages.FD} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('TipCalculator');
           }}>
-          <View className="my-1">
-            <Image className=" w-[100%] h-[105px]" source={allImages.Tip} />
+          <View className="my-1 flex justify-center items-center">
+            <Image className=" w-[315px] h-[105px]" source={allImages.Tip} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('SipCalculator');
           }}>
-          <View className="my-1">
-            <Image className=" w-[100%] h-[105px]" source={allImages.SIP} />
+          <View className="my-1 flex justify-center items-center">
+            <Image className=" w-[315px] h-[105px]" source={allImages.SIP} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('RdCalculator');
           }}>
-          <View className="my-1">
-            <Image className=" w-[100%] h-[105px]" source={allImages.RD} />
+          <View className="my-1 flex justify-center items-center">
+            <Image className=" w-[315px] h-[105px]" source={allImages.RD} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('InterestCalculator');
           }}>
-          <View className="my-1">
+          <View className="my-1 flex justify-center items-center">
             <Image
-              className=" w-[100%] h-[105px]"
+              className=" w-[315px] h-[105px]"
               source={allImages.Interest}
             />
           </View>

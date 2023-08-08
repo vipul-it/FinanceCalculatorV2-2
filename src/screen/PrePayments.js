@@ -112,7 +112,8 @@ const PrePayments = () => {
   const [selectedcolor, setSelected] = useState(1);
 
   const calculatePrePaymentROI = () => {
-    // Convert input values to numbers
+
+    // // Convert input values to numbers
     const loanAmount = parseFloat(amount);
     const initialInterest = parseFloat(interest);
     const initialEmi = parseFloat(currentEmi);
@@ -135,7 +136,7 @@ const PrePayments = () => {
     );
 
     // Calculate difference between old and new EMIs and tenures
-    const emiDifference = newEmiAmount - oldEmiAmount;
+    const emiDifference = newEmiAmount - initialEmi;
     const tenureDifference = newTenureMonths - oldTenureMonths;
 
     // Update state with calculated values

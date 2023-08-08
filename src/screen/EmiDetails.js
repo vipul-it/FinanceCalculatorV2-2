@@ -1,5 +1,5 @@
 import {View, Text, FlatList, StyleSheet, Alert} from 'react-native';
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 import CustomTopLayout from './common/CustomTopLayout';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import CalculateButton from './common/CalculateButton';
@@ -24,7 +24,8 @@ const EmiDetails = () => {
       title: 'Share EMI Deatils',
       url: uri,
       type: 'image/jpeg',
-      message: 'Calculated by: https://play.google.com/store/apps/details?id=com.fin.emi.disccal'
+      message:
+        'Calculated by: https://play.google.com/store/apps/details?id=com.fin.emi.disccal',
     };
 
     try {
@@ -120,7 +121,9 @@ const EmiDetails = () => {
           srcPath={allImages.Share}
         />
       </View>
-      <ViewShot ref={viewShotRef} options={{ fileName: "EMI-Details", format: "jpg", quality: 0.9 }}>
+      <ViewShot
+        ref={viewShotRef}
+        options={{fileName: 'EMI-Details', format: 'jpg', quality: 0.9}}>
         <View className="mx-5 bg-whiteC p-4 rounded-lg">
           <View className="border-[1px] border-primaryHeading rounded-lg ">
             {/* Table Header */}
@@ -155,7 +158,7 @@ const EmiDetails = () => {
             <View className="flex-row justify-between  border-t-[1px]  border-primaryHeading ">
               <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
                 <Text className="text-primaryHeading ">{mydata?.tenure}</Text>
-                <Text className="text-gray-700">Months</Text>
+                <Text className="text-gray-700">Years</Text>
               </View>
               <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
                 <Text className="text-primaryHeading ">
@@ -174,30 +177,27 @@ const EmiDetails = () => {
 
           <Text className="my-2"></Text>
 
-          <View className="border-[1px] border-primaryHeading rounded-lg ">
-          
-          <View className="flex-row bg-primaryDark justify-between px-2 py-2 rounded-t-lg ">
-            <View className="">
-              <Text className="text-whiteC">Years</Text>
+          {/* <View className="border-[1px] border-primaryHeading rounded-lg ">
+            <View className="flex-row bg-primaryDark justify-between px-2 py-2 rounded-t-lg ">
+              <View className="">
+                <Text className="text-whiteC">Years</Text>
+              </View>
+              <View className="">
+                <Text className="text-whiteC">Principal</Text>
+              </View>
+              <View className="">
+                <Text className="text-whiteC">Intrerest</Text>
+              </View>
+              <View className="">
+                <Text className="text-whiteC">Balance</Text>
+              </View>
             </View>
-            <View className="">
-              <Text className="text-whiteC">Principal</Text>
-            </View>
-            <View className="">
-              <Text className="text-whiteC">Intrerest</Text>
-            </View>
-            <View className="">
-              <Text className="text-whiteC">Balance</Text>
-            </View>
-          </View>
-
-          
-          <FlatList
-            data={data}
-            renderItem={renderRow}
-            keyExtractor={item => item.id.toString()}
-          />
-        </View>
+            <FlatList
+              data={data}
+              renderItem={renderRow}
+              keyExtractor={item => item.id.toString()}
+            />
+          </View> */}
         </View>
       </ViewShot>
     </View>

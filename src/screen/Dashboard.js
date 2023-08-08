@@ -52,8 +52,9 @@ const Dashboard = () => {
     <SafeAreaView className="">
       <StatusBar backgroundColor="#879DFF" />
       <View>
-        <View className="box-content h-48 w-full rounded-b-[50px] bg-primaryC px-[12%] py-2 flex-row items-center justify-between -mt-12">
+        <View className="box-content h-48 w-full rounded-b-[50px] bg-primaryC px-[10%] py-2 flex-row items-center justify-between -mt-12">
           <TouchableOpacity
+          className="p-3"
             onPress={() => {
               navigation.navigate('MenuBar');
             }}>
