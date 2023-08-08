@@ -117,7 +117,7 @@ const Dashboard = () => {
           </View>
         </View>
 
-        <View className="mx-5 pb-1 my-5 pl-[6%]">
+        <View className="mx-5 pb-1 my-5 flex justify-center items-center">
           <Text className=" text-primaryHeading text-2xl font-bold">
             Value of Your money
           </Text>
