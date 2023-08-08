@@ -161,7 +161,7 @@ const Detilsshowemi = () => {
                 <Text className="text-gray-700">Years</Text>
               </View>
               <View className="border-r-[1px] border-primaryHeading justify-center items-center flex p-2">
-                <Text className="text-primaryHeading ">{intrest}</Text>
+                <Text className="text-primaryHeading ">{intrest} %</Text>
                 <Text className="text-gray-700">Interest Rate</Text>
               </View>
               <View className=" justify-center items-center flex p-2 ">
