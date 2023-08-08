@@ -96,8 +96,29 @@ const TipCalculator = () => {
     setTotalBill(total.toFixed(2));
     setPerPersonBill(perPerson.toFixed(2));
 
-    insertData();
   };
+
+    // Define an async function
+    async function delayedAction(delay) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(`Action completed after ${delay} ms`);
+        }, delay);
+      });
+    }
+  
+    // Another async function that uses await
+    async function main() {
+      try {
+        const result1 = await delayedAction(100); // Wait for .5 seconds
+        calculateBill();
+  
+        const result2 = await delayedAction(500); // Wait for 1.5 second
+        insertData();
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    }
 
   const insertData = () => {
     db.transaction(tx => {
@@ -189,7 +210,7 @@ const TipCalculator = () => {
           <View className="flex-row justify-evenly my-12">
             <CalculateButton
               name="Calculate"
-              onPress={calculateBill}
+              onPress={main}
               srcPath={allImages.Calculate}
             />
             <CalculateButton

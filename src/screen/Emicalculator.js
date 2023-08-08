@@ -62,9 +62,40 @@ const Emicalculator = () => {
     setTotalInterestPercentage(0);
   };
 
+  // Define an async function
+  async function delayedAction(delay) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(`Action completed after ${delay} ms`);
+      }, delay);
+    });
+  }
+
+  // Another async function that uses await
+  async function main() {
+    console.log('Start');
+
+    try {
+      const result1 = await delayedAction(100); // Wait for .5 seconds
+      calculateLoan();
+      console.log(result1);
+
+      const result2 = await delayedAction(500); // Wait for 1.5 second
+      insertData();
+      console.log(result2);
+
+      console.log('All actions completed');
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+
+
+
   const calculateLoan = () => {
     // Hide the keyboard
     Keyboard.dismiss();
+    
 
     const loanAmount = parseFloat(amount);
     const loanInterest = parseFloat(interest) / 100;
@@ -160,8 +191,7 @@ const Emicalculator = () => {
       Alert.alert('Validation Error', 'Please enter empty fields.');
       return;
     }
-    calculateLoan();
-    insertData();
+    main();
   };
 
   return (

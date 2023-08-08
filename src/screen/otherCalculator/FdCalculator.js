@@ -49,10 +49,30 @@ const FdCalculator = () => {
     setDays('');
     setMaturityAmount('');
   };
+  // Define an async function
+  async function delayedAction(delay) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(`Action completed after ${delay} ms`);
+      }, delay);
+    });
+  }
 
+  // Another async function that uses await
+  async function main() {
+    try {
+      const result1 = await delayedAction(100); // Wait for .5 seconds
+      calculateMaturityAmount();
+
+      const result2 = await delayedAction(500); // Wait for 1.5 second
+      insertData();
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
   const handleCalculateButton = () => {
     Keyboard.dismiss();
-    calculateMaturityAmount();
+    main();
   };
   const calculateMaturityAmount = () => {
     // Validate input values
@@ -69,7 +89,6 @@ const FdCalculator = () => {
     // const maturityAmount = principal * (Math.pow(1 + (rate / 100), timeInYears));
     const maturityAmount = p * Math.pow(1 + r / n, n * t);
     setMaturityAmount(maturityAmount);
-    insertData();
   };
 
   const insertData = () => {
@@ -204,7 +223,7 @@ const FdCalculator = () => {
             <Text className="text-primaryHeading text-lg ">
               &#8377;{' '}
               {maturityAmount.toLocaleString(undefined, {
-                maximumFractionDigits: 2,
+                maximumFractionDigits: 0,
               })}
             </Text>
           </View>

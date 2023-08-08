@@ -43,7 +43,7 @@ const SipCalculator = () => {
 
   //   Reset data
   const resetData = () => {
-    totalInvestmentAmount('');
+    setTotalInvestmentAmount('');
     setExpectedReturnRate('');
     setYears('1');
     setMonths('0');
@@ -51,10 +51,6 @@ const SipCalculator = () => {
     setTotalReturn('');
   };
 
-  const handleCalculateButton = () => {
-    Keyboard.dismiss();
-    calculateSIP();
-  };
   const calculateSIP = () => {
     // Basic validation
     if (
@@ -88,9 +84,29 @@ const SipCalculator = () => {
         maximumFractionDigits: 0,
       }),
     );
-
-    insertData();
   };
+
+  // Define an async function
+  async function delayedAction(delay) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(`Action completed after ${delay} ms`);
+      }, delay);
+    });
+  }
+
+  // Another async function that uses await
+  async function main() {
+    try {
+      const result1 = await delayedAction(400); // Wait for seconds
+      calculateSIP();
+
+      const result2 = await delayedAction(900); // Wait for second
+      insertData();
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
 
   const insertData = () => {
     db.transaction(tx => {
@@ -115,6 +131,11 @@ const SipCalculator = () => {
         // },
       );
     });
+  };
+
+  const handleCalculateButton = () => {
+    Keyboard.dismiss();
+    main();
   };
   // Calculation end
 

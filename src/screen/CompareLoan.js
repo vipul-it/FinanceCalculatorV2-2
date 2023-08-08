@@ -95,7 +95,7 @@ const CompareLoan = () => {
       (principalAmount2 * monthlyInterestRate2 * denominator2) /
       (denominator2 - 1);
     const interestPayable2 = emi2 * timePeriod2 - principalAmount2;
-    const totalPayable2 =   interestPayable2 + principalAmount2 * 1;
+    const totalPayable2 = interestPayable2 + principalAmount2 * 1;
 
     setEMI1(emi1.toFixed(2));
     setEMI2(emi2.toFixed(2));
@@ -115,6 +115,28 @@ const CompareLoan = () => {
     setTotalPayDiff(totalPayDiff.toFixed(2));
   };
 
+  // Define an async function
+  async function delayedAction(delay) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(`Action completed after ${delay} ms`);
+      }, delay);
+    });
+  }
+
+  // Another async function that uses await
+  async function main() {
+    try {
+      const result1 = await delayedAction(100); // Wait for .5 seconds
+      calculateLoanComparison();
+
+      const result2 = await delayedAction(500); // Wait for 1.5 second
+      insertData();
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+
   const handleCalculateButton = () => {
     // Validate input values
     if (
@@ -130,8 +152,7 @@ const CompareLoan = () => {
       Alert.alert('Validation Error', 'Please enter empty fields.');
       return;
     }
-    calculateLoanComparison();
-    insertData();
+    main();
   };
   const insertData = () => {
     db.transaction(tx => {
@@ -205,7 +226,7 @@ const CompareLoan = () => {
                         onChangeText={setPrincipalAmount1}
                         placeholder="eg. 100000"
                         keyboardType="numeric"
-                        autoComplete='off'
+                        autoComplete="off"
                       />
                       <Text className="text-blackC">&#8377;</Text>
                     </View>
@@ -216,7 +237,7 @@ const CompareLoan = () => {
                         onChangeText={setPrincipalAmount2}
                         placeholder="eg. 100000"
                         keyboardType="numeric"
-                        autoComplete='off'
+                        autoComplete="off"
                       />
                       <Text className="text-blackC">&#8377;</Text>
                     </View>
@@ -231,7 +252,7 @@ const CompareLoan = () => {
                       onChangeText={setInterest1}
                       placeholder="eg. 8"
                       keyboardType="numeric"
-                      autoComplete='off'
+                      autoComplete="off"
                     />
                     <Text className="text-blackC">&#37;</Text>
                   </View>
@@ -242,7 +263,7 @@ const CompareLoan = () => {
                       onChangeText={setInterest2}
                       placeholder="eg. 8"
                       keyboardType="numeric"
-                      autoComplete='off'
+                      autoComplete="off"
                     />
                     <Text className="text-blackC">&#37;</Text>
                   </View>
@@ -258,7 +279,7 @@ const CompareLoan = () => {
                         onChangeText={setYears1}
                         placeholder="eg. 5"
                         keyboardType="numeric"
-                        autoComplete='off'
+                        autoComplete="off"
                       />
                       <Text className="text-blackC -ml-7">Years</Text>
                     </View>
@@ -269,7 +290,7 @@ const CompareLoan = () => {
                         onChangeText={setYears2}
                         placeholder="eg. 5"
                         keyboardType="numeric"
-                        autoComplete='off'
+                        autoComplete="off"
                       />
                       <Text className="text-blackC -ml-7">Years</Text>
                     </View>
@@ -282,7 +303,7 @@ const CompareLoan = () => {
                         onChangeText={setMonths1}
                         placeholder="eg. 5"
                         keyboardType="numeric"
-                        autoComplete='off'
+                        autoComplete="off"
                       />
                       <Text className="text-blackC -ml-9">Months</Text>
                     </View>
@@ -293,7 +314,7 @@ const CompareLoan = () => {
                         onChangeText={setMonths2}
                         placeholder="eg. 5"
                         keyboardType="numeric"
-                        autoComplete='off'
+                        autoComplete="off"
                       />
                       <Text className="text-blackC -ml-9">Months</Text>
                     </View>
