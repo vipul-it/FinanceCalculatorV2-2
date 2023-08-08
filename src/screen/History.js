@@ -9,10 +9,10 @@ const History = () => {
   return (
     <View>
       <CustomTopLayout
-        name="History"
-        onPressLeft={() => {
+        onPress={() => {
           navigation.goBack();
         }}
+        name="History"
       />
       <View className="">
         <ScrollView className="mb-28 mt-5">
